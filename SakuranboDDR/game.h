@@ -5,6 +5,7 @@
 #define GAME_H_
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <string>
 
@@ -33,6 +34,8 @@ private:
 	// 키보드 event
 	Event event;
 
+	// bgm
+	Music bgm;
 
 public:
 	Game(int width, int height);

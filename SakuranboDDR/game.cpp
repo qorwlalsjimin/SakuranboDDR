@@ -7,11 +7,6 @@ Game::Game(int width, int height) {
 	WINDOW_WIDTH = width;
 	WINDOW_HEIGHT = height;
 
-	isStartPage = true;
-
-	// background image
-	tBackground.loadFromFile("Images/screen_game.png");
-	tBackground.setSmooth(true);
 
 	sBackground.setTexture(tBackground);
 
@@ -21,9 +16,18 @@ Game::Game(int width, int height) {
 				Style::Close);
 	window.setFramerateLimit(60);
 
-	// intro page
+	// 게임 배경
+	tBackground.loadFromFile("Images/screen_game.png");
+	tBackground.setSmooth(true);
+
+	// 인트로 배경
 	tStartpage.loadFromFile("Images/screen_intro.png");
 	sStartpage.setTexture(tStartpage);
+	isStartPage = true;
+
+	if (!bgm.openFromFile("Sound/playbgm.wav"))
+		cout << "bgm 음원 파일을 열 수 없습니다." << endl;
+	bgm.setVolume(20.0);
 }
 
 /* 인트로 화면
@@ -50,7 +54,7 @@ void Game::startGame(){
 
 // 게임 시작 (enter 키 이벤트)
 void Game::startPage() {
-	cout << "startPage 실행" << endl;
+	//cout << "startPage 실행" << endl;
 
 	if (event.type == Event::KeyPressed) {
 		switch (event.key.code) {
@@ -68,6 +72,12 @@ void Game::startPage() {
 ---------------------------------*/
 void Game::runGame() {
 	cout << "runGame 실행" << endl;
+
+	// main bgm
+	if (!bgm.openFromFile("Sound/playbgm.wav"))
+		cout << "bgm 음원 파일을 열 수 없습니다." << endl;
+	bgm.play();
+	bgm.setLoop(true);
 
 	while (window.isOpen()) {
 		/* Draw */
