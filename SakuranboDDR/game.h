@@ -9,6 +9,8 @@
 #include <iostream>
 #include <string>
 
+#include "fixed_node.h"
+
 using namespace std;
 using namespace sf;
 
@@ -37,6 +39,9 @@ private:
 	// bgm
 	Music bgm;
 
+	// fixed_node
+	FixedNode fixed_node[4];
+	Texture tFixedNode;
 public:
 	Game(int width, int height);
 
