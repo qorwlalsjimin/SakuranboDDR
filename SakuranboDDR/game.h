@@ -21,17 +21,22 @@ private:
 
 	// 시작 화면 판단
 	bool isStartPage;
+	int crtPage;
 
 	// window
 	RenderWindow window;
 
 	// intro page
-	Texture tStartpage;
-	Sprite sStartpage;
+	Texture tIntro;
+	Sprite sIntro;
 
-	// background image
-	Texture tBackground;
-	Sprite sBackground;
+	// game page
+	Texture tGame;
+	Sprite sGame;
+
+	// ending page
+	Texture tEnding;
+	Sprite sEnding;
 
 	// 키보드 event
 	Event event;
