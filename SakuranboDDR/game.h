@@ -45,7 +45,7 @@ private:
 	Music bgm;
 
 	// fixed_node
-	FixedNode fixed_node[4];
+	FixedNode* fixed_node;
 	Texture tFixedNode;
 public:
 	Game(int width, int height);

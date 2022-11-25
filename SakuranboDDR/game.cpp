@@ -41,6 +41,7 @@ Game::Game(int width, int height) {
 
 	// fixed_node
 	tFixedNode.loadFromFile("Images/arrow_left.png");
+	fixed_node = new FixedNode[4];
 	fill_n(fixed_node, 4, FixedNode(&tFixedNode, WINDOW_WIDTH, WINDOW_HEIGHT));
 }
 
