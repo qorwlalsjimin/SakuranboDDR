@@ -52,7 +52,7 @@ public:
 
 	// 인트로 화면
 	void startGame();
-	void startPage();
+	void controlPage();
 
 	// 게임 화면
 	void runGame();

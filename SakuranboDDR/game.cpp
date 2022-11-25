@@ -45,7 +45,7 @@ Game::Game(int width, int height) {
 	fill_n(fixed_node, 4, FixedNode(&tFixedNode, WINDOW_WIDTH, WINDOW_HEIGHT));
 }
 
-/* 인트로 화면
+/*게임 실행 - 윈도우창 열려있는 동안
 ---------------------------------*/
 void Game::startGame() {
 	cout << "startGame 실행" << endl;
@@ -60,9 +60,7 @@ void Game::startGame() {
 			{
 				window.close();
 			}
-
-			cout << "이거 실행 안 되나" << endl;
-			startPage();
+			controlPage();
 		}
 		
 		// 화면 전환
@@ -75,7 +73,7 @@ void Game::startGame() {
 			window.draw(sGame);
 			window.display();
 			runGame();
-			startPage();
+			controlPage();
 			break;
 		case page_type::ending :
 			window.draw(sEnding);
@@ -85,8 +83,8 @@ void Game::startGame() {
 	}
 }
 
-// 게임 시작 (enter 키 이벤트)
-void Game::startPage() {
+// 키보드 이벤트로 crtPage 값 조정
+void Game::controlPage() {
 	if (event.type == Event::KeyPressed) {
 		cout << "키눌럿는뎅 실행-" << endl;
 		switch (event.key.code) {
@@ -108,7 +106,7 @@ void Game::startPage() {
 }
 
 
-/* Game Loop
+/* DDR 게임 시작
 ---------------------------------*/
 void Game::runGame() {
 	if (!bgm.openFromFile("Sound/playbgm.wav"))
@@ -127,6 +125,7 @@ void Game::runGame() {
 
 }
 
+// 게임에 필요한 그래픽 준비
 void Game::drawGame() {
 	window.draw(sGame);
 
@@ -142,5 +141,4 @@ void Game::drawGame() {
 	for (int i = 0; i < 4; i++)
 		window.draw(fixed_node[i]);
 
-	startPage();
 }
