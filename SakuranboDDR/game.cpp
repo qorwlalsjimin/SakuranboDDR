@@ -45,9 +45,7 @@ Game::Game(int width, int height) {
 
 	// moving_node 객체생성
 	//tMovingNode.loadFromFile("Images/arrow_moving.png");
-	moving_node = new MovingNode[4];
-	fill_n(moving_node, 4, MovingNode(&tMovingNode, WINDOW_WIDTH, WINDOW_HEIGHT));
-
+	//moving_node = new MovingNode[4];
 }
 
 /*게임 실행 - 윈도우창 열려있는 동안
@@ -136,29 +134,27 @@ void Game::drawGame() {
 
 	// 고정된 화살표
 	fixed_node[0].setPosition(220.f, 126.f);
-	fixed_node[1].setPosition(343.f, 126.f);
-	fixed_node[2].setPosition(465.f, 126.f);
-	fixed_node[3].setPosition(587.f, 126.f);
+	fixed_node[1].setPosition(342.f, 126.f); //+122
+	fixed_node[2].setPosition(464.f, 126.f); //+122
+	fixed_node[3].setPosition(586.f, 126.f); //+122
 
 	fixed_node[1].setRotation(90.f);
 	fixed_node[2].setRotation(180.f);
 	fixed_node[3].setRotation(270.f);
 
 	// 움직이는 화살표
-	moving_node[0].setPosition(220.f, 700.f);
-	moving_node[1].setPosition(343.f, 700.f);
-	moving_node[2].setPosition(465.f, 700.f);
-	moving_node[3].setPosition(587.f, 700.f);
-
-	moving_node[1].setRotation(90.f);
-	moving_node[2].setRotation(180.f);
-	moving_node[3].setRotation(270.f);
+	moving_node.push_back(MovingNode(&tMovingNode, 170.f, 206.f, 0.f));
+	moving_node.push_back(MovingNode(&tMovingNode, 292.f, 206.f, 0.f));
+	moving_node.push_back(MovingNode(&tMovingNode, 414.f, 206.f, 0.f));
+	moving_node.push_back(MovingNode(&tMovingNode, 536.f, 206.f, 0.f));
 	
+	
+	//467
 	// 화면에 올리기
 	for (int i = 0; i < 4; i++)
-	{
 		window.draw(fixed_node[i]);
-		window.draw(moving_node[i]);
-	}
 
+
+	for (auto& iter : moving_node)
+		window.draw(iter);
 }

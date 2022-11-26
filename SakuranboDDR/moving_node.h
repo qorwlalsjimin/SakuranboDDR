@@ -11,6 +11,7 @@ private:
 
 public:
 	MovingNode();
+	MovingNode(Texture* tMovingNode, float x, float y, float r);
 	MovingNode(Texture* tMovingNode, int& WINDOW_WIDTH, int& WINDOW_HEIGHT);
 
 	void update(float y);

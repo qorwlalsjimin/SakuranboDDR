@@ -8,6 +8,7 @@
 #include <SFML/Audio.hpp>
 #include <iostream>
 #include <string>
+#include <vector> 
 
 #include "fixed_node.h"
 #include "moving_node.h"
@@ -50,7 +51,7 @@ private:
 	Texture tFixedNode;
 
 	// moving_node
-	MovingNode* moving_node;
+	vector<MovingNode> moving_node; // 올라오는 모든 노드를 담는 배열
 	Texture tMovingNode;
 	
 public:
@@ -63,5 +64,7 @@ public:
 	// 게임 화면
 	void runGame();
 	void drawGame();
+
+	void dropNotes(string grade);
 };
 #endif

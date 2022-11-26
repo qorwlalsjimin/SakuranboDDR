@@ -6,9 +6,10 @@ using namespace std;
 MovingNode::MovingNode() {
 }
 
-MovingNode::MovingNode(Texture* tMovingNode, int& WINDOW_WIDTH, int& WINDOW_HEIGHT) : RectangleShape(sf::Vector2f(100.0f, 100.0f)) {
+MovingNode::MovingNode(Texture* tMovingNode, float x, float y, float r) : RectangleShape(sf::Vector2f(100.0f, 100.0f)) {
+	setPosition(x, y);
+	setRotation(r);
 	setTexture(tMovingNode);
-	setOrigin(50, 50);
 	setFillColor(sf::Color::Blue); //юс╫ц
 }
 
