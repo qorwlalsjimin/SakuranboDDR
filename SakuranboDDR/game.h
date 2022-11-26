@@ -10,6 +10,7 @@
 #include <string>
 
 #include "fixed_node.h"
+#include "moving_node.h"
 
 using namespace std;
 using namespace sf;
@@ -47,6 +48,11 @@ private:
 	// fixed_node
 	FixedNode* fixed_node;
 	Texture tFixedNode;
+
+	// moving_node
+	MovingNode* moving_node;
+	Texture tMovingNode;
+	
 public:
 	Game(int width, int height);
 

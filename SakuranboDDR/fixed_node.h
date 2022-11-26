@@ -1,32 +1,22 @@
-/*
-*	Copyright (C) 2020 by Hannah Noh
-*
-*	본 헤더파일은 fixed_node 객체를 선언한다.
-*
-*	Last Updated On 2020.05.29. FRI
-*	@author : Hannah Noh
-*/
-
-#ifndef GAME_PLAYER__H__
-#define GAME_PLAYER__H__
+#ifndef GAME_FIXEDNODE__H__
+#define GAME_FIXEDNODE__H__
 
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
 
-class FixedNode : public CircleShape {
+//TODO: RectangleShape로 바꾸기
+class FixedNode : public RectangleShape {
 private:
 	float fixed_nodeX, fixed_nodeY;
 
 public:
 	FixedNode();
-	FixedNode(Texture* tPlayer, int& WINDOW_WIDTH, int& WINDOW_HEIGHT);
+	FixedNode(Texture* tFixedNode, int& WINDOW_WIDTH, int& WINDOW_HEIGHT);
 
 	void update(float x, float y);
-	float getPlayerX();
-	float getPlayerY();
-	void setPositionCenter(int& WINDOW_WIDTH, int& WINDOW_HEIGHT);
-	void isBite(Texture* tPlayer, int& numofBite);
+	float getFixedNodeX();
+	float getFixedNodeY();
 };
 
-#endif // !GAME_PLAYER__H__
+#endif // !GAME_FIXEDNODE__H__

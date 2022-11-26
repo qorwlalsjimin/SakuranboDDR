@@ -9,40 +9,45 @@ enum page_type {
 Game::Game(int width, int height) {
 	cout << "생성자 실행" << endl;
 
+	// 윈도우창에서 커서 숨김
 	ShowCursor(false);
 
+	// 윈도우창 가로세로 길이
 	WINDOW_WIDTH = width;
 	WINDOW_HEIGHT = height;
 
+	// 현재 화면 정보
 	crtPage = page_type::intro;
 
-
-	// window
+	// 윈도우창 실행
 	window.create(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT),
 		"Dance Dance Revolution",
 		Style::Close);
 	window.setFramerateLimit(60);
 
-
-	// intro page
+	// intro page 이미지 준비
 	tIntro.loadFromFile("Images/screen_intro.png");
 	sIntro.setTexture(tIntro);
 
-	// game page
+	// game page 이미지 준비
 	tGame.loadFromFile("Images/screen_game.png");
-	tGame.setSmooth(true);
 	sGame.setTexture(tGame);
 	// sprite와 texture의 크기가 다를때에는: .setTextureRect(sf::IntRect(, , , ));
 
-	// game page
+	// game page 이미지 준비
 	tEnding.loadFromFile("Images/screen_ending.jpg");
-	tEnding.setSmooth(true);
 	sEnding.setTexture(tEnding);
 
-	// fixed_node
-	tFixedNode.loadFromFile("Images/arrow_left.png");
+	// fixed_node 객체 생성
+	//tFixedNode.loadFromFile("Images/arrow_fixed.png");
 	fixed_node = new FixedNode[4];
 	fill_n(fixed_node, 4, FixedNode(&tFixedNode, WINDOW_WIDTH, WINDOW_HEIGHT));
+
+	// moving_node 객체생성
+	//tMovingNode.loadFromFile("Images/arrow_moving.png");
+	moving_node = new MovingNode[4];
+	fill_n(moving_node, 4, MovingNode(&tMovingNode, WINDOW_WIDTH, WINDOW_HEIGHT));
+
 }
 
 /*게임 실행 - 윈도우창 열려있는 동안
@@ -129,6 +134,7 @@ void Game::runGame() {
 void Game::drawGame() {
 	window.draw(sGame);
 
+	// 고정된 화살표
 	fixed_node[0].setPosition(220.f, 126.f);
 	fixed_node[1].setPosition(343.f, 126.f);
 	fixed_node[2].setPosition(465.f, 126.f);
@@ -138,7 +144,21 @@ void Game::drawGame() {
 	fixed_node[2].setRotation(180.f);
 	fixed_node[3].setRotation(270.f);
 
+	// 움직이는 화살표
+	moving_node[0].setPosition(220.f, 700.f);
+	moving_node[1].setPosition(343.f, 700.f);
+	moving_node[2].setPosition(465.f, 700.f);
+	moving_node[3].setPosition(587.f, 700.f);
+
+	moving_node[1].setRotation(90.f);
+	moving_node[2].setRotation(180.f);
+	moving_node[3].setRotation(270.f);
+	
+	// 화면에 올리기
 	for (int i = 0; i < 4; i++)
+	{
 		window.draw(fixed_node[i]);
+		window.draw(moving_node[i]);
+	}
 
 }

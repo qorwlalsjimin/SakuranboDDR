@@ -24,12 +24,18 @@
     <ClCompile Include="fixed_node.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="movind_node.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="fixed_node.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="moving_node.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
