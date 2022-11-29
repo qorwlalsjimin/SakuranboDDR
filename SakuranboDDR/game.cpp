@@ -1,9 +1,11 @@
 ﻿#include "game.h"
 #include <Windows.h>
 
-enum page_type {
+enum page_type { //대문자
 	intro, game, ending
 };
+
+int cnt = 0;
 
 //Game 생성자
 Game::Game(int width, int height) {
@@ -18,6 +20,9 @@ Game::Game(int width, int height) {
 
 	// 현재 화면 정보
 	crtPage = page_type::intro;
+
+	// 노드 떨어질지 말지
+	isMovingNode = true;
 
 	// 윈도우창 실행
 	window.create(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT),
@@ -39,13 +44,17 @@ Game::Game(int width, int height) {
 	sEnding.setTexture(tEnding);
 
 	// fixed_node 객체 생성
-	//tFixedNode.loadFromFile("Images/arrow_fixed.png");
+	tFixedNode.loadFromFile("Images/arrow_fixed.png");
 	fixed_node = new FixedNode[4];
 	fill_n(fixed_node, 4, FixedNode(&tFixedNode, WINDOW_WIDTH, WINDOW_HEIGHT));
 
-	// moving_node 객체생성
-	//tMovingNode.loadFromFile("Images/arrow_moving.png");
-	//moving_node = new MovingNode[4];
+	tMovingNode.loadFromFile("Images/arrow_moving.png");
+
+	// 움직이는 화살표
+	moving_node.push_back(MovingNode(&tMovingNode, 170.f, 800.f, 0.f));
+	moving_node.push_back(MovingNode(&tMovingNode, 402.f, 800.f, 90.f));
+	//moving_node.push_back(MovingNode(&tMovingNode, 414.f, 800.f, 180.f));
+	//moving_node.push_back(MovingNode(&tMovingNode, 536.f, 800.f, 270.f));
 }
 
 /*게임 실행 - 윈도우창 열려있는 동안
@@ -70,19 +79,18 @@ void Game::startGame() {
 		switch (crtPage) {
 		case page_type::intro :
 			window.draw(sIntro);
-			window.display();
 			break;
 		case page_type::game :
 			window.draw(sGame);
-			window.display();
 			runGame();
 			controlPage();
 			break;
 		case page_type::ending :
 			window.draw(sEnding);
-			window.display();
 			break;
 		}
+
+		window.display();
 	}
 }
 
@@ -126,6 +134,7 @@ void Game::runGame() {
 		window.display();
 	}
 
+	
 }
 
 // 게임에 필요한 그래픽 준비
@@ -133,28 +142,45 @@ void Game::drawGame() {
 	window.draw(sGame);
 
 	// 고정된 화살표
-	fixed_node[0].setPosition(220.f, 126.f);
-	fixed_node[1].setPosition(342.f, 126.f); //+122
-	fixed_node[2].setPosition(464.f, 126.f); //+122
-	fixed_node[3].setPosition(586.f, 126.f); //+122
+	fixed_node[0].setPosition(220.f, 130.f);
+	fixed_node[1].setPosition(342.f, 130.f); //+122
+	fixed_node[2].setPosition(464.f, 130.f); //+122
+	fixed_node[3].setPosition(586.f, 130.f); //+122
 
 	fixed_node[1].setRotation(90.f);
 	fixed_node[2].setRotation(180.f);
 	fixed_node[3].setRotation(270.f);
 
-	// 움직이는 화살표
-	moving_node.push_back(MovingNode(&tMovingNode, 170.f, 206.f, 0.f));
-	moving_node.push_back(MovingNode(&tMovingNode, 292.f, 206.f, 0.f));
-	moving_node.push_back(MovingNode(&tMovingNode, 414.f, 206.f, 0.f));
-	moving_node.push_back(MovingNode(&tMovingNode, 536.f, 206.f, 0.f));
-	
-	
+	//TODO: judgeX, judgeY 배열로 만들어서 값 넣기
+	//judgeX = fixed_node[0].getFixedNodeX;
+
 	//467
 	// 화면에 올리기
 	for (int i = 0; i < 4; i++)
 		window.draw(fixed_node[i]);
 
-
 	for (auto& iter : moving_node)
 		window.draw(iter);
+
+	for (auto& iter : moving_node) {
+		if (isMovingNode) {
+			if ((iter.moving_nodeY >= -100))
+				iter.update(-10);
+
+			//if (iter.moving_nodeY <= 30) {
+			//	iter.setFillColor(sf::Color::Yellow);
+			//}
+			////TODO: 초록색 더 늘리기
+			//else if (iter.moving_nodeY <= 130 - 72 && iter.moving_nodeY >= 0) {
+			//	iter.setFillColor(sf::Color::Green);
+			//}
+			//else if (iter.moving_nodeY < 300) {
+			//	iter.setFillColor(sf::Color::Yellow);
+			//}
+			//else if (iter.moving_nodeY >= 0) {
+			//	iter.setFillColor(sf::Color::Red);
+			//}
+		}
+	}
+
 }

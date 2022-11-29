@@ -7,9 +7,9 @@ using namespace sf;
 
 class MovingNode : public RectangleShape {
 private:
-	float moving_nodeX, moving_nodeY;
 
 public:
+	float moving_nodeX, moving_nodeY;
 	MovingNode();
 	MovingNode(Texture* tMovingNode, float x, float y, float r);
 	MovingNode(Texture* tMovingNode, int& WINDOW_WIDTH, int& WINDOW_HEIGHT);

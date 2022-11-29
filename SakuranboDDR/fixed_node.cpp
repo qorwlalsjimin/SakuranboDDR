@@ -9,7 +9,6 @@ FixedNode::FixedNode() {
 FixedNode::FixedNode(Texture* tPlayer, int& WINDOW_WIDTH, int& WINDOW_HEIGHT) : RectangleShape(sf::Vector2f(100.0f,100.0f)) {
 	setTexture(tPlayer);
 	setOrigin(50, 50);
-	setFillColor(sf::Color::White); //юс╫ц
 }
 
 void FixedNode::update(float x, float y) {

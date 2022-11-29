@@ -21,6 +21,16 @@ private:
 	// window창 가로 세로 폭
 	int WINDOW_WIDTH, WINDOW_HEIGHT;
 
+	// 노드 떨어지는 속도
+	int SPEED;
+
+	// 노드 떨어질지 말지
+	bool isMovingNode;
+
+	// 판정 좌표
+	int judgeX;
+	int judgeY;
+
 	// 시작 화면 판단
 	bool isStartPage;
 	int crtPage;
