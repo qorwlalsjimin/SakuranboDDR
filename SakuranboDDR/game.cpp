@@ -48,16 +48,16 @@ Game::Game(int width, int height) {
 
 	// fixed_node 객체 생성
 	tFixedNode.loadFromFile("Images/arrow_fixed.png");
-	fixed_node = new FixedNode[4];
-	fill_n(fixed_node, 4, FixedNode(&tFixedNode, WINDOW_WIDTH, WINDOW_HEIGHT));
+	fixed_node = new FixedNote[4];
+	fill_n(fixed_node, 4, FixedNote(&tFixedNode, WINDOW_WIDTH, WINDOW_HEIGHT));
 
 	tMovingNode.loadFromFile("Images/arrow_moving.png");
 
 	// 움직이는 화살표
-	moving_node.push_back(MovingNode(&tMovingNode, 220.f, 800.f, 0.f));
-	moving_node.push_back(MovingNode(&tMovingNode, 342.f, 800.f, 90.f));
-	moving_node.push_back(MovingNode(&tMovingNode, 464.f, 800.f, 180.f)); //아래, 오른쪽 화살표는 y좌표가 100씩 밀림
-	moving_node.push_back(MovingNode(&tMovingNode, 586.f, 800.f, 270.f));
+	moving_node.push_back(MovingNote(&tMovingNode,'L'));
+	moving_node.push_back(MovingNote(&tMovingNode,'D'));
+	moving_node.push_back(MovingNote(&tMovingNode,'U')); //아래, 오른쪽 화살표는 y좌표가 100씩 밀림
+	moving_node.push_back(MovingNote(&tMovingNode,'R'));
 }
 
 /*게임 실행 - 윈도우창 열려있는 동안
@@ -100,14 +100,12 @@ void Game::startGame() {
 // 키보드 이벤트로 crtPage 값 조정
 void Game::controlPage() {
 	if (event.type == Event::KeyPressed) {
-		cout << "키눌럿는뎅 실행-" << endl;
 		switch (event.key.code) {
-		case Keyboard::Enter:
-			cout << "엔터!" << endl;
+		case Keyboard::Space:
 			crtPage = page_type::game;
 			cout << "crtPage: " << crtPage << endl;
 			break;
-		case Keyboard::A:
+		case Keyboard::Enter:
 			//엔딩 화면으로 이동
 			cout << "A!" << endl;
 			crtPage = page_type::ending;
@@ -151,8 +149,8 @@ void Game::drawGame() {
 	fixed_node[3].setPosition(586.f, 130.f); //+122
 
 	fixed_node[1].setRotation(90.f);
-	fixed_node[2].setRotation(180.f);
-	fixed_node[3].setRotation(270.f);
+	fixed_node[2].setRotation(270.f);
+	fixed_node[3].setRotation(180.f);
 
 	//TODO: judgeX, judgeY 배열로 만들어서 값 넣기
 	//judgeX = fixed_node[0].getFixedNodeX;
@@ -172,17 +170,23 @@ void Game::drawGame() {
 			if ((iter.moving_nodeY >= -100))
 				iter.update(-10);
 
-			// 차이가 좁을수록 정확도↑
-			if (iter.getMovingNodeY() - fixed_node[0].getFixedNodeY() <= 10) { //화살표 넘어선 윗쪽
+			//* 화살표 충돌 판정: 목표 화살표와 움직이는 화살표의 y좌표값 차이로 판정
+			//목표 화살표를 넘어선 윗 부분 
+			if (iter.getMovingNoteY() - fixed_node[0].getFixedNoteY() <= 10) { 
 				iter.setFillColor(sf::Color::Yellow);
-				cout << "좌표: " << (iter.getMovingNodeY() - fixed_node[0].getFixedNodeY()) << endl;
 			}
-			else if (iter.getMovingNodeY() - fixed_node[0].getFixedNodeY() <= 200) {
+
+			//목표 화살표 부분
+			else if (iter.getMovingNoteY() - fixed_node[0].getFixedNoteY() <= 200) {
 				iter.setFillColor(sf::Color::Green);
 			}
-			else if (iter.getMovingNodeY() - fixed_node[0].getFixedNodeY() <= 500) {
+
+			//목표 화살표보다 밑 부분
+			else if (iter.getMovingNoteY() - fixed_node[0].getFixedNoteY() <= 500) {
 				iter.setFillColor(sf::Color::Yellow);
 			}
+
+			//목표 화살표보다 훨씬 밑 부분
 			else{
 				iter.setFillColor(sf::Color::Red);
 			}

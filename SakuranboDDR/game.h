@@ -10,8 +10,8 @@
 #include <string>
 #include <vector> 
 
-#include "fixed_node.h"
-#include "moving_node.h"
+#include "fixed_note.h"
+#include "moving_note.h"
 
 using namespace std;
 using namespace sf;
@@ -21,15 +21,11 @@ private:
 	// window창 가로 세로 폭
 	int WINDOW_WIDTH, WINDOW_HEIGHT;
 
-	// 노드 떨어지는 속도
-	int SPEED;
+	//// 노드 떨어지는 속도
+	//int SPEED;
 
 	// 노드 떨어질지 말지
 	bool isMovingNode;
-
-	// 판정 좌표
-	int judgeX;
-	int judgeY;
 
 	// 시작 화면 판단
 	bool isStartPage;
@@ -57,11 +53,11 @@ private:
 	Music bgm;
 
 	// fixed_node
-	FixedNode* fixed_node;
+	FixedNote* fixed_node;
 	Texture tFixedNode;
 
 	// moving_node
-	vector<MovingNode> moving_node; // 올라오는 모든 노드를 담는 배열
+	vector<MovingNote> moving_node; // 올라오는 모든 노드를 담는 배열
 	Texture tMovingNode;
 	
 public:

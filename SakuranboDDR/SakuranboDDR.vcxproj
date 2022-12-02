@@ -129,13 +129,13 @@
   <ItemGroup>
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="fixed_node.cpp" />
-    <ClCompile Include="movind_node.cpp" />
+    <ClCompile Include="fixed_note.cpp" />
+    <ClCompile Include="moving_note.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
-    <ClInclude Include="fixed_node.h" />
-    <ClInclude Include="moving_node.h" />
+    <ClInclude Include="fixed_note.h" />
+    <ClInclude Include="moving_note.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
