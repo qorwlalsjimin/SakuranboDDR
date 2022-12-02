@@ -1,6 +1,9 @@
 ﻿#include "game.h"
 #include <Windows.h>
 
+#define NODE_WIDTH 72;
+#define NODE_HEIGHT 72;
+
 enum page_type { //대문자
 	intro, game, ending
 };
@@ -51,10 +54,10 @@ Game::Game(int width, int height) {
 	tMovingNode.loadFromFile("Images/arrow_moving.png");
 
 	// 움직이는 화살표
-	moving_node.push_back(MovingNode(&tMovingNode, 170.f, 800.f, 0.f));
-	moving_node.push_back(MovingNode(&tMovingNode, 402.f, 800.f, 90.f));
-	//moving_node.push_back(MovingNode(&tMovingNode, 414.f, 800.f, 180.f));
-	//moving_node.push_back(MovingNode(&tMovingNode, 536.f, 800.f, 270.f));
+	moving_node.push_back(MovingNode(&tMovingNode, 220.f, 800.f, 0.f));
+	moving_node.push_back(MovingNode(&tMovingNode, 342.f, 800.f, 90.f));
+	moving_node.push_back(MovingNode(&tMovingNode, 464.f, 800.f, 180.f)); //아래, 오른쪽 화살표는 y좌표가 100씩 밀림
+	moving_node.push_back(MovingNode(&tMovingNode, 586.f, 800.f, 270.f));
 }
 
 /*게임 실행 - 윈도우창 열려있는 동안
@@ -154,32 +157,36 @@ void Game::drawGame() {
 	//TODO: judgeX, judgeY 배열로 만들어서 값 넣기
 	//judgeX = fixed_node[0].getFixedNodeX;
 
-	//467
+	//467개의 노드
 	// 화면에 올리기
-	for (int i = 0; i < 4; i++)
-		window.draw(fixed_node[i]);
+	for (int i = 0; i < 4; i++) 
+		window.draw(fixed_node[i]); //고정된 흰색 화살표 그려주기
 
 	for (auto& iter : moving_node)
-		window.draw(iter);
+	{
+		window.draw(iter); //올라오는 화살표 그려주기
+	}
 
 	for (auto& iter : moving_node) {
 		if (isMovingNode) {
 			if ((iter.moving_nodeY >= -100))
 				iter.update(-10);
 
-			//if (iter.moving_nodeY <= 30) {
-			//	iter.setFillColor(sf::Color::Yellow);
-			//}
-			////TODO: 초록색 더 늘리기
-			//else if (iter.moving_nodeY <= 130 - 72 && iter.moving_nodeY >= 0) {
-			//	iter.setFillColor(sf::Color::Green);
-			//}
-			//else if (iter.moving_nodeY < 300) {
-			//	iter.setFillColor(sf::Color::Yellow);
-			//}
-			//else if (iter.moving_nodeY >= 0) {
-			//	iter.setFillColor(sf::Color::Red);
-			//}
+			// 차이가 좁을수록 정확도↑
+			if (iter.getMovingNodeY() - fixed_node[0].getFixedNodeY() <= 10) { //화살표 넘어선 윗쪽
+				iter.setFillColor(sf::Color::Yellow);
+				cout << "좌표: " << (iter.getMovingNodeY() - fixed_node[0].getFixedNodeY()) << endl;
+			}
+			else if (iter.getMovingNodeY() - fixed_node[0].getFixedNodeY() <= 200) {
+				iter.setFillColor(sf::Color::Green);
+			}
+			else if (iter.getMovingNodeY() - fixed_node[0].getFixedNodeY() <= 500) {
+				iter.setFillColor(sf::Color::Yellow);
+			}
+			else{
+				iter.setFillColor(sf::Color::Red);
+			}
+
 		}
 	}
 
