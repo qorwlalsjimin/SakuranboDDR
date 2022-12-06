@@ -10,6 +10,7 @@ enum page_type { //대문자
 
 int cnt = 0;
 
+
 //Game 생성자
 Game::Game(int width, int height) {
 	cout << "생성자 실행" << endl;
@@ -56,13 +57,17 @@ Game::Game(int width, int height) {
 
 	tMovingNode.loadFromFile("Images/arrow_moving.png");
 
-	// 움직이는 화살표
-	moving_node.push_back(MovingNote(&tMovingNode,'L'));
-	moving_node.push_back(MovingNote(&tMovingNode,'D'));
-	moving_node.push_back(MovingNote(&tMovingNode,'U')); //아래, 오른쪽 화살표는 y좌표가 100씩 밀림
-	moving_node.push_back(MovingNote(&tMovingNode,'R'));
 }
 
+
+void Game::dropNotes() {
+	// 움직이는 화살표
+	moving_node.push_back(MovingNote(&tMovingNode, 'L'));
+	moving_node.push_back(MovingNote(&tMovingNode, 'D'));
+	moving_node.push_back(MovingNote(&tMovingNode, 'U')); //아래, 오른쪽 화살표는 y좌표가 100씩 밀림
+	moving_node.push_back(MovingNote(&tMovingNode, 'R'));
+
+}
 /*게임 실행 - 윈도우창 열려있는 동안
 ---------------------------------*/
 void Game::startGame() {
@@ -140,6 +145,7 @@ void Game::runGame(int level) {
 
 	cout << "runGame 실행" << endl;
 
+	dropNotes();
 	while (window.isOpen()) {
 
 		/* Draw */
@@ -179,9 +185,6 @@ void Game::drawGame(int level) {
 	fixed_node[1].setRotation(90.f);
 	fixed_node[2].setRotation(270.f);
 	fixed_node[3].setRotation(180.f);
-
-	//TODO: judgeX, judgeY 배열로 만들어서 값 넣기
-	//judgeX = fixed_node[0].getFixedNodeX;
 
 	//467개의 노드
 	// 화면에 올리기

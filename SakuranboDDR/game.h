@@ -74,6 +74,6 @@ public:
 	void runGame(int level);
 	void drawGame(int level);
 
-	void dropNotes(string grade);
+	void dropNotes();
 };
 #endif

@@ -127,12 +127,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Beat.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="fixed_note.cpp" />
     <ClCompile Include="moving_note.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Beat.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="fixed_note.h" />
     <ClInclude Include="moving_note.h" />
