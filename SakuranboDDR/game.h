@@ -39,8 +39,11 @@ private:
 	Sprite sIntro;
 
 	// game page
-	Texture tGame;
-	Sprite sGame;
+	Texture tGame_easy;
+	Sprite sGame_easy;
+
+	Texture tGame_hard;
+	Sprite sGame_hard;
 
 	// ending page
 	Texture tEnding;
@@ -68,8 +71,8 @@ public:
 	void controlPage();
 
 	// 게임 화면
-	void runGame();
-	void drawGame();
+	void runGame(int level);
+	void drawGame(int level);
 
 	void dropNotes(string grade);
 };

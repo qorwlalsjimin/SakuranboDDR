@@ -5,7 +5,7 @@
 #define NODE_HEIGHT 72;
 
 enum page_type { //대문자
-	intro, game, ending
+	intro, game_easy, game_hard, ending
 };
 
 int cnt = 0;
@@ -38,8 +38,11 @@ Game::Game(int width, int height) {
 	sIntro.setTexture(tIntro);
 
 	// game page 이미지 준비
-	tGame.loadFromFile("Images/screen_game.png");
-	sGame.setTexture(tGame);
+	tGame_easy.loadFromFile("Images/screen_game.png");
+	sGame_easy.setTexture(tGame_easy);
+
+	tGame_hard.loadFromFile("Images/screen_game_hard.jpg");
+	sGame_hard.setTexture(tGame_hard);
 	// sprite와 texture의 크기가 다를때에는: .setTextureRect(sf::IntRect(, , , ));
 
 	// game page 이미지 준비
@@ -83,9 +86,14 @@ void Game::startGame() {
 		case page_type::intro :
 			window.draw(sIntro);
 			break;
-		case page_type::game :
-			window.draw(sGame);
-			runGame();
+		case page_type::game_easy :
+			window.draw(sGame_easy);
+			runGame(1);
+			controlPage();
+			break;
+		case page_type::game_hard :
+			window.draw(sGame_hard);
+			runGame(2);
 			controlPage();
 			break;
 		case page_type::ending :
@@ -101,8 +109,12 @@ void Game::startGame() {
 void Game::controlPage() {
 	if (event.type == Event::KeyPressed) {
 		switch (event.key.code) {
-		case Keyboard::Space:
-			crtPage = page_type::game;
+		case Keyboard::G:
+			crtPage = page_type::game_easy;
+			cout << "crtPage: " << crtPage << endl;
+			break;
+		case Keyboard::H:
+			crtPage = page_type::game_hard;
 			cout << "crtPage: " << crtPage << endl;
 			break;
 		case Keyboard::Enter:
@@ -120,7 +132,7 @@ void Game::controlPage() {
 
 /* DDR 게임 시작
 ---------------------------------*/
-void Game::runGame() {
+void Game::runGame(int level) {
 	if (!bgm.openFromFile("Sound/playbgm.wav"))
 		cout << "playbgm.wav파일을 열 수 없습니다." << endl;
 	bgm.play();
@@ -131,7 +143,15 @@ void Game::runGame() {
 	while (window.isOpen()) {
 
 		/* Draw */
-		drawGame();
+		switch (level) {
+		case 1:
+			drawGame(1);
+			break;
+		case 2:
+			drawGame(2);
+			break;
+
+		}
 		window.display();
 	}
 
@@ -139,8 +159,16 @@ void Game::runGame() {
 }
 
 // 게임에 필요한 그래픽 준비
-void Game::drawGame() {
-	window.draw(sGame);
+void Game::drawGame(int level) {
+	switch (level) {
+	case 1:
+		window.draw(sGame_easy);
+		break;
+	case 2:
+		window.draw(sGame_hard);
+		break;
+
+	}
 
 	// 고정된 화살표
 	fixed_node[0].setPosition(220.f, 130.f);
