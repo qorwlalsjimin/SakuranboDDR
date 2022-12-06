@@ -9,9 +9,6 @@ enum page_type { //대문자
 	intro, game_easy, game_hard, ending
 };
 
-int cnt = 0;
-
-
 //Game 생성자
 Game::Game(int width, int height) {
 	cout << "생성자 실행" << endl;
@@ -63,9 +60,12 @@ Game::Game(int width, int height) {
 
 // 올라오는 노트 데이터
 void Game::dropNotes() {
+	cout << "dropNotes 실행" << endl;
 	//올라오는 화살표 시간에 맞춰 그려주기
-	for (int i = 0; i < 128; i++) { //sizeof(beat_easy) / sizeof(beat_easy[0])
-		moving_node.push_back(MovingNote(&tMovingNode, beat_easy[i].getNoteName()));
+	for (int i = 0; i < 200; i++) { //sizeof(beat_easy) / sizeof(beat_easy[0])
+		{
+			moving_node.push_back(MovingNote(&tMovingNode, beat_easy[i].getNoteName()));
+		}
 	}
 }
 
@@ -149,6 +149,7 @@ void Game::runGame(int level) {
 
 	cout << "runGame 실행" << endl;
 
+	moving_node.clear();
 	dropNotes();
 	while (window.isOpen()) {
 
@@ -163,9 +164,11 @@ void Game::runGame(int level) {
 
 		}
 		window.display();
-	}
 
-	
+		// 음악 재생 시간이 되면 끝내기
+		if (duration > (int)bgm.getDuration().asSeconds() * 1000)
+			break;
+	}
 }
 
 // 게임에 필요한 그래픽 준비
@@ -186,8 +189,8 @@ void Game::drawGame(int level) {
 	fixed_node[2].setPosition(464.f, 130.f); //+122
 	fixed_node[3].setPosition(586.f, 130.f); //+122
 
-	fixed_node[1].setRotation(90.f);
-	fixed_node[2].setRotation(270.f);
+	fixed_node[1].setRotation(270.f);
+	fixed_node[2].setRotation(90.f);
 	fixed_node[3].setRotation(180.f);
 
 	//467개의 노드
@@ -197,12 +200,10 @@ void Game::drawGame(int level) {
 
 	duration = clock() - timer;
 	//올라오는 화살표 시간에 맞춰 그려주기
-	for (int i = 0; i < 128; i++) { //sizeof(beat_easy) / sizeof(beat_easy[0])
-		//bgm.getDuration().asSeconds() // 음원 초 들어있음 172.362초
-
+	for (int i = 0; i < 200; i++) { //sizeof(beat_easy) / sizeof(beat_easy[0])
 		if ( beat_easy[i].getTime() <= duration )
 		{
-			moving_node[i].update(-18);
+			moving_node[i].update(-18); //135 기준으로 사라져야함
 			window.draw(moving_node[i]);
 		}
 	}
@@ -234,8 +235,4 @@ void Game::drawGame(int level) {
 		}
 	}
 
-}
-
-void Game::drawNote(int i) {
-	window.draw(moving_node[i]);
 }
