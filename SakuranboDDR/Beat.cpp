@@ -1,6 +1,8 @@
 #include "Beat.h"
 
-Beat::Beat(int time, string noteName) {
+Beat::Beat(){}
+
+Beat::Beat(int time, char noteName) {
 	this->time = time;
 	this->noteName = noteName;
 }
@@ -12,9 +14,9 @@ void Beat::setTime(int time) {
 	this->time = time;
 }
 
-string Beat::getNoteName() {
+char Beat::getNoteName() {
 	return noteName;
 }
-void Beat::setNoteName(string noteName) {
+void Beat::setNoteName(char noteName) {
 	this->noteName = noteName;
 }

@@ -1,4 +1,5 @@
 ﻿#include "game.h"
+#include "Beat.h"
 #include <Windows.h>
 
 #define NODE_WIDTH 72;
@@ -46,7 +47,7 @@ Game::Game(int width, int height) {
 	sGame_hard.setTexture(tGame_hard);
 	// sprite와 texture의 크기가 다를때에는: .setTextureRect(sf::IntRect(, , , ));
 
-	// game page 이미지 준비
+	// ending page 이미지 준비
 	tEnding.loadFromFile("Images/screen_ending.jpg");
 	sEnding.setTexture(tEnding);
 
@@ -55,19 +56,19 @@ Game::Game(int width, int height) {
 	fixed_node = new FixedNote[4];
 	fill_n(fixed_node, 4, FixedNote(&tFixedNode, WINDOW_WIDTH, WINDOW_HEIGHT));
 
+	// 올라오는 화살표 이미지 입히기
 	tMovingNode.loadFromFile("Images/arrow_moving.png");
 
 }
 
-
+// 올라오는 노트 데이터
 void Game::dropNotes() {
-	// 움직이는 화살표
-	moving_node.push_back(MovingNote(&tMovingNode, 'L'));
-	moving_node.push_back(MovingNote(&tMovingNode, 'D'));
-	moving_node.push_back(MovingNote(&tMovingNode, 'U')); //아래, 오른쪽 화살표는 y좌표가 100씩 밀림
-	moving_node.push_back(MovingNote(&tMovingNode, 'R'));
-
+	//올라오는 화살표 시간에 맞춰 그려주기
+	for (int i = 0; i < 128; i++) { //sizeof(beat_easy) / sizeof(beat_easy[0])
+		moving_node.push_back(MovingNote(&tMovingNode, beat_easy[i].getNoteName()));
+	}
 }
+
 /*게임 실행 - 윈도우창 열려있는 동안
 ---------------------------------*/
 void Game::startGame() {
@@ -75,9 +76,6 @@ void Game::startGame() {
 
 	// crtPage에 다른 값 들어오면 끝
 	while (window.isOpen()) {
-		//cout << "crtPage: " << crtPage << endl;
-
-		//
 		while (window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed)
 			{
@@ -91,16 +89,20 @@ void Game::startGame() {
 		case page_type::intro :
 			window.draw(sIntro);
 			break;
+
 		case page_type::game_easy :
+			timer = clock(); //게임 시작 시 타이머도 시작
 			window.draw(sGame_easy);
 			runGame(1);
 			controlPage();
 			break;
+
 		case page_type::game_hard :
 			window.draw(sGame_hard);
 			runGame(2);
 			controlPage();
 			break;
+
 		case page_type::ending :
 			window.draw(sEnding);
 			break;
@@ -114,20 +116,21 @@ void Game::startGame() {
 void Game::controlPage() {
 	if (event.type == Event::KeyPressed) {
 		switch (event.key.code) {
-		case Keyboard::G:
+		case Keyboard::G: //쉬운 버전으로 이동
 			crtPage = page_type::game_easy;
-			cout << "crtPage: " << crtPage << endl;
+			cout << "쉬운 버전" << endl;
 			break;
-		case Keyboard::H:
+
+		case Keyboard::H: //어려운 버전으로 이동
 			crtPage = page_type::game_hard;
-			cout << "crtPage: " << crtPage << endl;
+			cout << "어려운 버전" << endl;
 			break;
-		case Keyboard::Enter:
-			//엔딩 화면으로 이동
-			cout << "A!" << endl;
+
+		case Keyboard::Enter: //엔딩 화면으로 이동
+			cout << "엔딩" << endl;
 			crtPage = page_type::ending;
-			cout << "crtPage: " << crtPage << endl;
 			break;
+
 		default:
 			break;
 		}
@@ -142,6 +145,7 @@ void Game::runGame(int level) {
 		cout << "playbgm.wav파일을 열 수 없습니다." << endl;
 	bgm.play();
 	bgm.setLoop(true);
+	
 
 	cout << "runGame 실행" << endl;
 
@@ -191,15 +195,20 @@ void Game::drawGame(int level) {
 	for (int i = 0; i < 4; i++) 
 		window.draw(fixed_node[i]); //고정된 흰색 화살표 그려주기
 
-	for (auto& iter : moving_node)
-	{
-		window.draw(iter); //올라오는 화살표 그려주기
+	duration = clock() - timer;
+	//올라오는 화살표 시간에 맞춰 그려주기
+	for (int i = 0; i < 128; i++) { //sizeof(beat_easy) / sizeof(beat_easy[0])
+		//bgm.getDuration().asSeconds() // 음원 초 들어있음 172.362초
+
+		if ( beat_easy[i].getTime() <= duration )
+		{
+			moving_node[i].update(-18);
+			window.draw(moving_node[i]);
+		}
 	}
 
 	for (auto& iter : moving_node) {
 		if (isMovingNode) {
-			if ((iter.moving_nodeY >= -100))
-				iter.update(-10);
 
 			//* 화살표 충돌 판정: 목표 화살표와 움직이는 화살표의 y좌표값 차이로 판정
 			//목표 화살표를 넘어선 윗 부분 
@@ -225,4 +234,8 @@ void Game::drawGame(int level) {
 		}
 	}
 
+}
+
+void Game::drawNote(int i) {
+	window.draw(moving_node[i]);
 }

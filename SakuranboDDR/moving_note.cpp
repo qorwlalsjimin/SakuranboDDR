@@ -14,15 +14,15 @@ MovingNote::MovingNote(Texture* tMovingNode, char arrow) : RectangleShape(sf::Ve
 			moving_nodeX = 220.f; //x좌표
 			setRotation(0.f);  //이미지 회전 (화살표 이미지가 <-로 하나밖에 없기 때문)
 			break;
-		case 'D':
+		case 'U':
 			moving_nodeX = 342.f;
 			setRotation(90.f);  //이미지 회전 (화살표 이미지가 <-로 하나밖에 없기 때문)
 			break;
-		case 'U':
+		case 'R':
 			moving_nodeX = 586.f;
 			setRotation(180.f);  //이미지 회전 (화살표 이미지가 <-로 하나밖에 없기 때문)
 			break;
-		case 'R':
+		case 'D':
 			moving_nodeX = 464.f;
 			setRotation(270.f);  //이미지 회전 (화살표 이미지가 <-로 하나밖에 없기 때문)
 			break;
