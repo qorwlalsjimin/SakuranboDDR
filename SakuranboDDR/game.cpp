@@ -150,23 +150,55 @@ void Game::catchNotes() {
 		switch (event.key.code) {
 		case Keyboard::J:
 			cout << "←" << endl;
+			arrowPressed = 'J';
 			break;
 		case Keyboard::K:
 			cout << "↓" << endl;
-			cout << fixed_node[1].getFillColor().toInteger() << endl;
+			arrowPressed = 'K';
 			break;
 		case Keyboard::I:
 			cout << "↑" << endl;
-			cout << fixed_node[2].getFillColor().toInteger() << endl;
+			arrowPressed = 'I';
 			break;
 		case Keyboard::L:
 			cout << "→" << endl;
-			cout << fixed_node[3].getFillColor().toInteger() << endl;
+			arrowPressed = 'L';
 			break;
 
 		default:
 			break;
 		}
+	}
+}
+
+void Game::judge(int index) {
+	MovingNote note = moving_node[index];
+	//목표 화살표를 넘어선 윗 부분 
+	if (note.getMovingNoteY() - fixed_node[0].getFixedNoteY() <= 10) {
+		note.setFillColor(sf::Color::Yellow);
+		score += 500;
+		cout << "good " << score << endl;
+	}
+
+	//목표 화살표 부분
+	else if (note.getMovingNoteY() - fixed_node[0].getFixedNoteY() <= 200) {
+		note.setFillColor(sf::Color::Green);
+		score += 1000;
+		cout << "perfect " << score << endl;
+	}
+
+	//목표 화살표보다 밑 부분
+	else if (note.getMovingNoteY() - fixed_node[0].getFixedNoteY() <= 500) {
+		note.setFillColor(sf::Color::Yellow);
+		score += 500;
+		cout << "good " << score << endl;
+	}
+
+	//목표 화살표보다 훨씬 밑 부분
+	else {
+		note.setFillColor(sf::Color::Red);
+		score += 0;
+		cout << "no " << score << endl;
 	}
 }
 
@@ -190,15 +222,6 @@ void Game::runGame(int level) {
 		// 음악 재생 시간이 되면 끝내기
 		if (duration > (int)bgm.getDuration().asSeconds() * 1000)
 			break;
-
-		// 화살표 키 이벤트
-		while (window.pollEvent(event)) {
-			if (event.type == sf::Event::Closed)
-			{
-				window.close();
-			}
-			catchNotes();
-		}
 	}
 }
 
@@ -228,6 +251,52 @@ void Game::drawGame(int level) {
 	for (int i = 0; i < 4; i++) 
 		window.draw(fixed_node[i]); //고정된 흰색 화살표 그려주기
 
+	// 화살표 키 이벤트
+	while (window.pollEvent(event)) {
+		//catchNotes();
+			if (event.type == Event::KeyPressed) {
+				MovingNote note;
+				switch (event.key.code) {
+					case Keyboard::J:
+						cout << i << endl;
+						if (moving_node[i].getArrow() == 'J') {
+							//목표 화살표를 넘어선 윗 부분 
+							judge(i);
+							if(moving_node[i].getMovingNoteY() <800 && moving_node[i].getMovingNoteY() > 0)
+								i += 1;
+						}
+						break;
+					case Keyboard::K:
+						cout << i << endl;
+						if (moving_node[i].getArrow() == 'K')
+						{
+							judge(i);
+							if (moving_node[i].getMovingNoteY() < 800 && moving_node[i].getMovingNoteY() > 0)
+								i += 1;
+						}
+						break;
+					case Keyboard::I:
+						cout << i << endl;
+						if (moving_node[i].getArrow() == 'I')
+						{
+							judge(i);
+							if (moving_node[i].getMovingNoteY() < 800 && moving_node[i].getMovingNoteY() > 0)
+								i += 1;
+						}
+						break;
+					case Keyboard::L:
+						cout << i << endl;
+						if (moving_node[i].getArrow() == 'L') {
+							judge(i);
+							if (moving_node[i].getMovingNoteY() < 800 && moving_node[i].getMovingNoteY() > 0)
+								i += 1;
+						}
+						break;
+				}
+			}
+	}
+
+	//* 난이도에 따라 화살표 그려주기
 	switch (level) {
 	case 1:
 		duration = clock() - timer;
@@ -257,31 +326,31 @@ void Game::drawGame(int level) {
 
 	}
 
-	for (auto& iter : moving_node) {
-		if (isMovingNode) {
+	//* 화살표 충돌 판정: 목표 화살표와 움직이는 화살표의 y좌표값 차이로 판정
+	//for (auto& iter : moving_node) {
+	//	if (iter.getArrow()==arrowPressed) {
 
-			//* 화살표 충돌 판정: 목표 화살표와 움직이는 화살표의 y좌표값 차이로 판정
-			//목표 화살표를 넘어선 윗 부분 
-			if (iter.getMovingNoteY() - fixed_node[0].getFixedNoteY() <= 10) { 
-				iter.setFillColor(sf::Color::Yellow);
-			}
+	//		//목표 화살표를 넘어선 윗 부분 
+	//		if (iter.getMovingNoteY() - fixed_node[0].getFixedNoteY() <= 10) { 
+	//			iter.setFillColor(sf::Color::Yellow);
+	//		}
 
-			//목표 화살표 부분
-			else if (iter.getMovingNoteY() - fixed_node[0].getFixedNoteY() <= 200) {
-				iter.setFillColor(sf::Color::Green);
-			}
+	//		//목표 화살표 부분
+	//		else if (iter.getMovingNoteY() - fixed_node[0].getFixedNoteY() <= 200) {
+	//			iter.setFillColor(sf::Color::Green);
+	//		}
 
-			//목표 화살표보다 밑 부분
-			else if (iter.getMovingNoteY() - fixed_node[0].getFixedNoteY() <= 500) {
-				iter.setFillColor(sf::Color::Yellow);
-			}
+	//		//목표 화살표보다 밑 부분
+	//		else if (iter.getMovingNoteY() - fixed_node[0].getFixedNoteY() <= 500) {
+	//			iter.setFillColor(sf::Color::Yellow);
+	//		}
 
-			//목표 화살표보다 훨씬 밑 부분
-			else{
-				iter.setFillColor(sf::Color::Red);
-			}
+	//		//목표 화살표보다 훨씬 밑 부분
+	//		else{
+	//			iter.setFillColor(sf::Color::Red);
+	//		}
 
-		}
-	}
+	//	}
+	//}
 
 }

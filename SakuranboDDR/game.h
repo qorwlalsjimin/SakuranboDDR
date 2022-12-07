@@ -20,6 +20,9 @@ using namespace sf;
 
 class Game {
 private:
+	//키보드로 입력한 값
+	char arrowPressed;
+
 	// window창 가로 세로 폭
 	int WINDOW_WIDTH, WINDOW_HEIGHT;
 
@@ -69,33 +72,100 @@ private:
 	clock_t  timer;
 	double duration;
 
+	// moving_note의 인덱스
+	int i = 0;
+
+	// 점수
+	int score = 0;
+
+	int gap = 300;
 	// 노트 악보
 	Beat beat_easy[200] = {
-		Beat(9000, 'U'),
-		Beat(9300, 'U'),
-		Beat(9600, 'U'),
-		Beat(9900, 'U'),
-		Beat(10500, 'D'),
-		Beat(10800, 'D'),
-		Beat(11100, 'D'),
-		Beat(11400, 'D'),
-		Beat(-1, 'U'),
+		Beat(9000, 'J'),
+		Beat(9300, 'J'),
+		Beat(9600, 'J'),
+		Beat(9900, 'J'),
+		Beat(10500, 'K'),
+		Beat(10800, 'K'),
+		Beat(11100, 'K'),
+		Beat(11400, 'K'),
+		Beat(11700, 'I'),
+		Beat(12000, 'I'),
+		Beat(13000, 'I'),
+		Beat(14000, 'I'),
+		Beat(15000, 'L'),
+		Beat(16000, 'L'),
+		Beat(17000, 'L'),
+		Beat(18000, 'L'),
+		Beat(19000, 'J'),
+		Beat(20000, 'J'),
+		Beat(21000, 'J'),
+		Beat(22000, 'J'),
+		Beat(23000, 'K'),
+		Beat(24000, 'K'),
+		Beat(25000, 'K'),
+		Beat(26000, 'K'),
+		Beat(27000, 'I'),
+		Beat(28000, 'I'),
+		Beat(29000, 'I'),
+		Beat(30000, 'I'),
+		Beat(31000, 'L'),
+		Beat(32000, 'L'),
+		Beat(33000, 'L'),
+		Beat(34000, 'L'),
+		Beat(35000, 'J'),
+		Beat(36000, 'J'),
+		Beat(37000, 'J'),
+		Beat(38000, 'J'),
+		Beat(39000, 'K'),
+		Beat(40000, 'K'),
+		Beat(41000, 'K'),
+		Beat(42000, 'K'),
+		Beat(45000, 'I'),
+		Beat(50000, 'I'),
+		Beat(55000, 'I'),
+		Beat(60000, 'I'),
+		Beat(65000, 'L'),
+		Beat(70000, 'L'),
+		Beat(75000, 'L'),
+		Beat(80000, 'L'),
+		Beat(85000, 'L'),
+		Beat(90000, 'L'),
+		Beat(95000, 'L'),
+		Beat(100000, 'L'),
+		Beat(135000, 'J'),
+		Beat(136000, 'J'),
+		Beat(137000, 'J'),
+		Beat(138000, 'J'),
+		Beat(139000, 'K'),
+		Beat(140000, 'K'),
+		Beat(141000, 'K'),
+		Beat(142000, 'K'),
+		Beat(145000, 'I'),
+		Beat(150000, 'I'),
+		Beat(155000, 'I'),
+		Beat(160000, 'I'),
+		Beat(165000, 'L'),
+		Beat(170000, 'L'),
+		Beat(175000, 'L'),
+		Beat(180000, 'L'),
+		Beat(-1, 'I'),
 	};
 
 	Beat beat_hard[200] = {
-		Beat(9000, 'U'),
-		Beat(9300, 'U'),
-		Beat(9600, 'U'),
-		Beat(9900, 'U'),
-		Beat(10500, 'U'),
-		Beat(10500, 'D'),
+		Beat(9000, 'I'),
+		Beat(9300, 'I'),
+		Beat(9600, 'I'),
+		Beat(9900, 'I'),
+		Beat(10500, 'I'),
+		Beat(10500, 'K'),
+		Beat(10800, 'J'),
 		Beat(10800, 'L'),
-		Beat(10800, 'R'),
-		Beat(11100, 'L'),
-		Beat(11400, 'R'),
-		Beat(11700, 'R'),
-		Beat(12000, 'L'),
-		Beat(-1, 'U'),
+		Beat(11100, 'J'),
+		Beat(11400, 'L'),
+		Beat(11700, 'L'),
+		Beat(12000, 'J'),
+		Beat(-1, 'I'),
 	};
 
 	
@@ -111,5 +181,7 @@ public:
 	void drawGame(int level);
 	void dropNotes(int level);
 	void catchNotes();
+
+	void judge(int index);
 };
 #endif

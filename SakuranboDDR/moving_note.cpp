@@ -7,22 +7,23 @@ MovingNote::MovingNote() {
 }
 
 MovingNote::MovingNote(Texture* tMovingNode, char arrow) : RectangleShape(sf::Vector2f(100.0f, 100.0f)) {
+	this->arrow = arrow;
 
 	//x좌표 화살표에 따라 위치 설정
 	switch (arrow) {
-		case 'L':
+		case 'J':
 			moving_nodeX = 220.f; //x좌표
 			setRotation(0.f);  //이미지 회전 (화살표 이미지가 <-로 하나밖에 없기 때문)
 			break;
-		case 'D':
+		case 'K':
 			moving_nodeX = 342.f;
 			setRotation(270.f);  //이미지 회전 (화살표 이미지가 <-로 하나밖에 없기 때문)
 			break;
-		case 'U':
+		case 'I':
 			moving_nodeX = 464.f;
 			setRotation(90.f);  //이미지 회전 (화살표 이미지가 <-로 하나밖에 없기 때문)
 			break;
-		case 'R':
+		case 'L':
 			moving_nodeX = 586.f;
 			setRotation(180.f);  //이미지 회전 (화살표 이미지가 <-로 하나밖에 없기 때문)
 			break;
@@ -33,6 +34,7 @@ MovingNote::MovingNote(Texture* tMovingNode, char arrow) : RectangleShape(sf::Ve
 	setPosition(moving_nodeX, moving_nodeY); //객체 위치 잡아주기
 	setTexture(tMovingNode);
 }
+
 
 void MovingNote::update(float y) {
 	move(0, y);
@@ -47,4 +49,8 @@ float MovingNote::getMovingNoteX() {
 //y좌표 얻기
 float MovingNote::getMovingNoteY() {
 	return moving_nodeY;
+}
+
+char MovingNote::getArrow() {
+	return arrow;
 }
