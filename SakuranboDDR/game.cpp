@@ -59,15 +59,22 @@ Game::Game(int width, int height) {
 }
 
 // 올라오는 노트 데이터
-void Game::dropNotes() {
+void Game::dropNotes(int level) {
 	cout << "dropNotes 실행" << endl;
 	//올라오는 화살표 시간에 맞춰 그려주기
-	for (int i = 0; i < 200; i++) { //sizeof(beat_easy) / sizeof(beat_easy[0])
-		{
-			moving_node.push_back(MovingNote(&tMovingNode, beat_easy[i].getNoteName()));
-		}
-	}
-}
+
+	switch (level) {
+		case 1:
+			for (int i = 0; i < 200; i++) //sizeof(beat_easy) / sizeof(beat_easy[0])
+				moving_node.push_back(MovingNote(&tMovingNode, beat_easy[i].getNoteName()));
+			break;
+		case 2:
+			for (int i = 0; i < 200; i++) //sizeof(beat_hard) / sizeof(beat_hard[0])
+				moving_node.push_back(MovingNote(&tMovingNode, beat_hard[i].getNoteName()));
+			break;
+	}//switch
+	
+}//dropNotes
 
 /*게임 실행 - 윈도우창 열려있는 동안
 ---------------------------------*/
@@ -98,6 +105,7 @@ void Game::startGame() {
 			break;
 
 		case page_type::game_hard :
+			timer = clock(); //게임 시작 시 타이머도 시작
 			window.draw(sGame_hard);
 			runGame(2);
 			controlPage();
@@ -137,7 +145,7 @@ void Game::controlPage() {
 	}
 }
 
-
+//TODO: 방향기 입력 이벤트
 /* DDR 게임 시작
 ---------------------------------*/
 void Game::runGame(int level) {
@@ -150,19 +158,10 @@ void Game::runGame(int level) {
 	cout << "runGame 실행" << endl;
 
 	moving_node.clear();
-	dropNotes();
+
+	dropNotes(level);
 	while (window.isOpen()) {
-
-		/* Draw */
-		switch (level) {
-		case 1:
-			drawGame(1);
-			break;
-		case 2:
-			drawGame(2);
-			break;
-
-		}
+		drawGame(level);
 		window.display();
 
 		// 음악 재생 시간이 되면 끝내기
@@ -193,19 +192,37 @@ void Game::drawGame(int level) {
 	fixed_node[2].setRotation(90.f);
 	fixed_node[3].setRotation(180.f);
 
-	//467개의 노드
 	// 화면에 올리기
 	for (int i = 0; i < 4; i++) 
 		window.draw(fixed_node[i]); //고정된 흰색 화살표 그려주기
 
-	duration = clock() - timer;
-	//올라오는 화살표 시간에 맞춰 그려주기
-	for (int i = 0; i < 200; i++) { //sizeof(beat_easy) / sizeof(beat_easy[0])
-		if ( beat_easy[i].getTime() <= duration )
-		{
-			moving_node[i].update(-18); //135 기준으로 사라져야함
-			window.draw(moving_node[i]);
+	switch (level) {
+	case 1:
+		duration = clock() - timer;
+		//cout << duration << endl;
+		//올라오는 화살표 시간에 맞춰 그려주기
+		for (int i = 0; i < 200; i++) { //sizeof(beat_easy) / sizeof(beat_easy[0])
+			if (beat_easy[i].getTime() <= duration && beat_easy[i].getTime() != -1)
+			{
+				moving_node[i].update(-18); //135 기준으로 사라져야함
+				window.draw(moving_node[i]);
+			}
 		}
+		break;
+
+	case 2:
+		duration = clock() - timer;
+		//cout << duration << endl;
+		//올라오는 화살표 시간에 맞춰 그려주기
+		for (int i = 0; i < 200; i++) { //sizeof(beat_hard) / sizeof(beat_hard[0])
+			if (beat_hard[i].getTime() <= duration && beat_hard[i].getTime() != -1)
+			{
+				moving_node[i].update(-18); //135 기준으로 사라져야함
+				window.draw(moving_node[i]);
+			}
+		}
+		break;
+
 	}
 
 	for (auto& iter : moving_node) {

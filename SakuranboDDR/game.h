@@ -71,12 +71,31 @@ private:
 
 	// 노트 악보
 	Beat beat_easy[200] = {
-		Beat(1000, 'R'),
-		Beat(2000, 'R'),
-		Beat(3000, 'R'),
-		Beat(4000, 'R'),
-		Beat(5000, 'R'),
+		Beat(9000, 'U'),
+		Beat(9300, 'U'),
+		Beat(9600, 'U'),
+		Beat(9900, 'U'),
+		Beat(10500, 'D'),
+		Beat(10800, 'D'),
+		Beat(11100, 'D'),
+		Beat(11400, 'D'),
+		Beat(-1, 'U'),
+	};
 
+	Beat beat_hard[200] = {
+		Beat(9000, 'U'),
+		Beat(9300, 'U'),
+		Beat(9600, 'U'),
+		Beat(9900, 'U'),
+		Beat(10500, 'U'),
+		Beat(10500, 'D'),
+		Beat(10800, 'L'),
+		Beat(10800, 'R'),
+		Beat(11100, 'L'),
+		Beat(11400, 'R'),
+		Beat(11700, 'R'),
+		Beat(12000, 'L'),
+		Beat(-1, 'U'),
 	};
 
 	
@@ -90,8 +109,6 @@ public:
 	// 게임 화면
 	void runGame(int level);
 	void drawGame(int level);
-	void drawNote(int i);
-
-	void dropNotes();
+	void dropNotes(int level);
 };
 #endif
