@@ -110,5 +110,6 @@ public:
 	void runGame(int level);
 	void drawGame(int level);
 	void dropNotes(int level);
+	void catchNotes();
 };
 #endif

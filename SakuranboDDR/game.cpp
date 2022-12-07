@@ -145,17 +145,40 @@ void Game::controlPage() {
 	}
 }
 
-//TODO: 방향기 입력 이벤트
+void Game::catchNotes() {
+	if (event.type == Event::KeyPressed) {
+		switch (event.key.code) {
+		case Keyboard::J:
+			cout << "←" << endl;
+			break;
+		case Keyboard::K:
+			cout << "↓" << endl;
+			cout << fixed_node[1].getFillColor().toInteger() << endl;
+			break;
+		case Keyboard::I:
+			cout << "↑" << endl;
+			cout << fixed_node[2].getFillColor().toInteger() << endl;
+			break;
+		case Keyboard::L:
+			cout << "→" << endl;
+			cout << fixed_node[3].getFillColor().toInteger() << endl;
+			break;
+
+		default:
+			break;
+		}
+	}
+}
+
 /* DDR 게임 시작
 ---------------------------------*/
 void Game::runGame(int level) {
+	cout << "runGame 실행" << endl;
+
 	if (!bgm.openFromFile("Sound/playbgm.wav"))
 		cout << "playbgm.wav파일을 열 수 없습니다." << endl;
 	bgm.play();
 	bgm.setLoop(true);
-	
-
-	cout << "runGame 실행" << endl;
 
 	moving_node.clear();
 
@@ -167,6 +190,15 @@ void Game::runGame(int level) {
 		// 음악 재생 시간이 되면 끝내기
 		if (duration > (int)bgm.getDuration().asSeconds() * 1000)
 			break;
+
+		// 화살표 키 이벤트
+		while (window.pollEvent(event)) {
+			if (event.type == sf::Event::Closed)
+			{
+				window.close();
+			}
+			catchNotes();
+		}
 	}
 }
 
