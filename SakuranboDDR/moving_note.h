@@ -7,6 +7,7 @@ using namespace sf;
 
 class MovingNote : public RectangleShape {
 private:
+	bool proceeded;
 
 public:
 	float moving_nodeX, moving_nodeY;
@@ -21,6 +22,9 @@ public:
 	float getMovingNoteX();
 	float getMovingNoteY();
 	char getArrow();
+
+	bool isProceeded();
+	void close();
 };
 
 #endif // !GAME_MOVINGNOTE__H__

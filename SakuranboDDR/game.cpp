@@ -1,12 +1,18 @@
 ﻿#include "game.h"
+#include "moving_note.h"
 #include "Beat.h"
 #include <Windows.h>
 
 #define NODE_WIDTH 72;
 #define NODE_HEIGHT 72;
+char keycode = 'M';
 
-enum page_type { //대문자
+enum PAGE_TYPE {
 	intro, game_easy, game_hard, ending
+};
+
+enum TIMING_TYPE {
+	none, great, good, bad
 };
 
 //Game 생성자
@@ -21,7 +27,7 @@ Game::Game(int width, int height) {
 	WINDOW_HEIGHT = height;
 
 	// 현재 화면 정보
-	crtPage = page_type::intro;
+	crtPage = PAGE_TYPE::intro;
 
 	// 노드 떨어질지 말지
 	isMovingNode = true;
@@ -48,10 +54,25 @@ Game::Game(int width, int height) {
 	tEnding.loadFromFile("Images/screen_ending.jpg");
 	sEnding.setTexture(tEnding);
 
+	// 판정 이미지 준비
+	tGreat.loadFromFile("Images/great.png");
+	tGood.loadFromFile("Images/good.png");
+	tBad.loadFromFile("Images/bad.png");
+	sGreat.setTexture(tGreat);
+	sGood.setTexture(tGood);
+	sBad.setTexture(tBad);
+
+	// 판정 이미지 보여줄 위치 설정
+	sGreat.setPosition(230.f, 340.f);
+	sGood.setPosition(230.f, 340.f);
+	sBad.setPosition(230.f, 340.f);
+
 	// fixed_node 객체 생성
 	tFixedNode.loadFromFile("Images/arrow_fixed.png");
 	fixed_node = new FixedNote[4];
 	fill_n(fixed_node, 4, FixedNote(&tFixedNode, WINDOW_WIDTH, WINDOW_HEIGHT));
+
+	tFixedNode_event.loadFromFile("Images/arrow_event.png");
 
 	// 올라오는 화살표 이미지 입히기
 	tMovingNode.loadFromFile("Images/arrow_moving.png");
@@ -62,19 +83,12 @@ Game::Game(int width, int height) {
 void Game::dropNotes(int level) {
 	cout << "dropNotes 실행" << endl;
 	//올라오는 화살표 시간에 맞춰 그려주기
-
-	switch (level) {
-		case 1:
-			for (int i = 0; i < 200; i++) //sizeof(beat_easy) / sizeof(beat_easy[0])
-				moving_node.push_back(MovingNote(&tMovingNode, beat_easy[i].getNoteName()));
-			break;
-		case 2:
-			for (int i = 0; i < 200; i++) //sizeof(beat_hard) / sizeof(beat_hard[0])
-				moving_node.push_back(MovingNote(&tMovingNode, beat_hard[i].getNoteName()));
-			break;
-	}//switch
-	
-}//dropNotes
+	for (int i = 0; i < 200; i++) { //sizeof(beat_easy) / sizeof(beat_easy[0])
+		{
+			moving_node.push_back(MovingNote(&tMovingNode, beat_easy[i].getNoteName()));
+		}
+	}
+}
 
 /*게임 실행 - 윈도우창 열려있는 동안
 ---------------------------------*/
@@ -90,28 +104,27 @@ void Game::startGame() {
 			}
 			controlPage();
 		}
-		
+
 		// 화면 전환
 		switch (crtPage) {
-		case page_type::intro :
+		case PAGE_TYPE::intro:
 			window.draw(sIntro);
 			break;
 
-		case page_type::game_easy :
+		case PAGE_TYPE::game_easy:
 			timer = clock(); //게임 시작 시 타이머도 시작
 			window.draw(sGame_easy);
 			runGame(1);
 			controlPage();
 			break;
 
-		case page_type::game_hard :
-			timer = clock(); //게임 시작 시 타이머도 시작
+		case PAGE_TYPE::game_hard:
 			window.draw(sGame_hard);
 			runGame(2);
 			controlPage();
 			break;
 
-		case page_type::ending :
+		case PAGE_TYPE::ending:
 			window.draw(sEnding);
 			break;
 		}
@@ -125,18 +138,18 @@ void Game::controlPage() {
 	if (event.type == Event::KeyPressed) {
 		switch (event.key.code) {
 		case Keyboard::G: //쉬운 버전으로 이동
-			crtPage = page_type::game_easy;
+			crtPage = PAGE_TYPE::game_easy;
 			cout << "쉬운 버전" << endl;
 			break;
 
 		case Keyboard::H: //어려운 버전으로 이동
-			crtPage = page_type::game_hard;
+			crtPage = PAGE_TYPE::game_hard;
 			cout << "어려운 버전" << endl;
 			break;
 
 		case Keyboard::Enter: //엔딩 화면으로 이동
 			cout << "엔딩" << endl;
-			crtPage = page_type::ending;
+			crtPage = PAGE_TYPE::ending;
 			break;
 
 		default:
@@ -145,78 +158,32 @@ void Game::controlPage() {
 	}
 }
 
-void Game::catchNotes() {
-	if (event.type == Event::KeyPressed) {
-		switch (event.key.code) {
-		case Keyboard::J:
-			cout << "←" << endl;
-			arrowPressed = 'J';
-			break;
-		case Keyboard::K:
-			cout << "↓" << endl;
-			arrowPressed = 'K';
-			break;
-		case Keyboard::I:
-			cout << "↑" << endl;
-			arrowPressed = 'I';
-			break;
-		case Keyboard::L:
-			cout << "→" << endl;
-			arrowPressed = 'L';
-			break;
-
-		default:
-			break;
-		}
-	}
-}
-
-void Game::judge(int index) {
-	MovingNote note = moving_node[index];
-	//목표 화살표를 넘어선 윗 부분 
-	if (note.getMovingNoteY() - fixed_node[0].getFixedNoteY() <= 10) {
-		note.setFillColor(sf::Color::Yellow);
-		score += 500;
-		cout << "good " << score << endl;
-	}
-
-	//목표 화살표 부분
-	else if (note.getMovingNoteY() - fixed_node[0].getFixedNoteY() <= 200) {
-		note.setFillColor(sf::Color::Green);
-		score += 1000;
-		cout << "perfect " << score << endl;
-	}
-
-	//목표 화살표보다 밑 부분
-	else if (note.getMovingNoteY() - fixed_node[0].getFixedNoteY() <= 500) {
-		note.setFillColor(sf::Color::Yellow);
-		score += 500;
-		cout << "good " << score << endl;
-	}
-
-	//목표 화살표보다 훨씬 밑 부분
-	else {
-		note.setFillColor(sf::Color::Red);
-		score += 0;
-		cout << "no " << score << endl;
-	}
-}
 
 /* DDR 게임 시작
 ---------------------------------*/
 void Game::runGame(int level) {
-	cout << "runGame 실행" << endl;
-
 	if (!bgm.openFromFile("Sound/playbgm.wav"))
 		cout << "playbgm.wav파일을 열 수 없습니다." << endl;
 	bgm.play();
 	bgm.setLoop(true);
 
-	moving_node.clear();
 
-	dropNotes(level);
+	cout << "runGame 실행" << endl;
+
+	moving_node.clear();
+	dropNotes(1);
 	while (window.isOpen()) {
-		drawGame(level);
+
+		/* Draw */
+		switch (level) {
+		case 1:
+			drawGame(1);
+			break;
+		case 2:
+			drawGame(2);
+			break;
+
+		}
 		window.display();
 
 		// 음악 재생 시간이 되면 끝내기
@@ -237,6 +204,7 @@ void Game::drawGame(int level) {
 
 	}
 
+
 	// 고정된 화살표
 	fixed_node[0].setPosition(220.f, 130.f);
 	fixed_node[1].setPosition(342.f, 130.f); //+122
@@ -247,110 +215,204 @@ void Game::drawGame(int level) {
 	fixed_node[2].setRotation(90.f);
 	fixed_node[3].setRotation(180.f);
 
+	//467개의 노드
 	// 화면에 올리기
-	for (int i = 0; i < 4; i++) 
-		window.draw(fixed_node[i]); //고정된 흰색 화살표 그려주기
+	for (int j = 0; j < 4; j++)
+		window.draw(fixed_node[j]); //고정된 흰색 화살표 그려주기
 
-	// 화살표 키 이벤트
-	while (window.pollEvent(event)) {
-		//catchNotes();
-			if (event.type == Event::KeyPressed) {
-				MovingNote note;
+	duration = clock() - timer;
+	//올라오는 화살표 시간에 맞춰 그려주기
+	int i;
+	for (i = 0; i < 200; i++) { //sizeof(beat_easy) / sizeof(beat_easy[0])
+		if (beat_easy[i].getTime() <= duration)
+		{
+			moving_node[i].update(-18); //135 기준으로 사라져야함
+			window.draw(moving_node[i]);
+		}
+	}
+
+	for (auto& iter : moving_node) {
+		keycode = 'M';
+		if (isMovingNode) {
+			//* 화살표 충돌 판정: 목표 화살표와 움직이는 화살표의 y좌표값 차이로 판정
+			//화살표 놓쳤을때
+			if (iter.getMovingNoteY() - fixed_node[0].getFixedNoteY() <= 0) {
+				iter.setFillColor(sf::Color::Red);
+			}
+			
+			//목표 화살표를 넘어선 윗 부분 
+			else if (iter.getMovingNoteY() - fixed_node[0].getFixedNoteY() <= 10) {
+				iter.setFillColor(sf::Color::Yellow);
+				//if (iter.getArrow() != NULL) cout << iter.getArrow() << "굿" << endl;
+
 				switch (event.key.code) {
-					case Keyboard::J:
-						cout << i << endl;
-						if (moving_node[i].getArrow() == 'J') {
-							//목표 화살표를 넘어선 윗 부분 
-							judge(i);
-							if(moving_node[i].getMovingNoteY() <800 && moving_node[i].getMovingNoteY() > 0)
-								i += 1;
-						}
-						break;
-					case Keyboard::K:
-						cout << i << endl;
-						if (moving_node[i].getArrow() == 'K')
-						{
-							judge(i);
-							if (moving_node[i].getMovingNoteY() < 800 && moving_node[i].getMovingNoteY() > 0)
-								i += 1;
-						}
-						break;
-					case Keyboard::I:
-						cout << i << endl;
-						if (moving_node[i].getArrow() == 'I')
-						{
-							judge(i);
-							if (moving_node[i].getMovingNoteY() < 800 && moving_node[i].getMovingNoteY() > 0)
-								i += 1;
-						}
-						break;
-					case Keyboard::L:
-						cout << i << endl;
-						if (moving_node[i].getArrow() == 'L') {
-							judge(i);
-							if (moving_node[i].getMovingNoteY() < 800 && moving_node[i].getMovingNoteY() > 0)
-								i += 1;
-						}
-						break;
+				case Keyboard::Left:
+					keycode = 'J';
+					break;
+				case Keyboard::Down:
+					keycode = 'K';
+					break;
+				case Keyboard::Up:
+					keycode = 'I';
+					break;
+				case Keyboard::Right:
+					keycode = 'L';
+					break;
+				}
+				while (window.pollEvent(event)) {
+					//cout << keycode << " " << iter.getArrow() << endl;
+					if (keycode == iter.getArrow()) {
+						score += 1000;
+						timingImage = TIMING_TYPE::good;
+						cout << "굿 " << score << endl;
+					}
+					else {
+						cout << "미스욘... " << endl;
+					}
+
 				}
 			}
+
+			//목표 화살표 부분
+			else if (iter.getMovingNoteY() - fixed_node[0].getFixedNoteY() <= 200) {
+				iter.setFillColor(sf::Color::Green);
+
+				switch (event.key.code) {
+				case Keyboard::Left:
+					keycode = 'J';
+					break;
+				case Keyboard::Down:
+					keycode = 'K';
+					break;
+				case Keyboard::Up:
+					keycode = 'I';
+					break;
+				case Keyboard::Right:
+					keycode = 'L';
+					break;
+				}
+				while (window.pollEvent(event)) {
+					//cout << keycode << " " << iter.getArrow() << endl;
+					if (keycode == iter.getArrow()) {
+						score += 3000;
+						timingImage = TIMING_TYPE::great;
+						cout << "퍼펙트 " << score << endl;
+					}
+					else {
+						cout << "미스욘... " << endl;
+					}
+
+				}
+			}
+
+			//목표 화살표보다 밑 부분
+			else if (iter.getMovingNoteY() - fixed_node[0].getFixedNoteY() <= 450) {
+				iter.setFillColor(sf::Color::Yellow);
+				//if (iter.getArrow() != NULL) cout << iter.getArrow() << "굿" << endl;
+
+				switch (event.key.code) {
+					case Keyboard::Left:
+						keycode = 'J';
+						break;
+					case Keyboard::Down:
+						keycode = 'K';
+						break;
+					case Keyboard::Up:
+						keycode = 'I';
+						break;
+					case Keyboard::Right:
+						keycode = 'L';
+						break;
+				}
+				while (window.pollEvent(event)) {
+					//cout << keycode << " " << iter.getArrow() << endl;
+					if (keycode == iter.getArrow()) {
+						score += 1000;
+						timingImage = TIMING_TYPE::good;
+						cout << "굿 " << score << endl;
+					}
+					else {
+						cout << "미스욘... " << endl;
+					}
+
+				}
+			}
+
+			//목표 화살표보다 훨씬 밑 부분
+			else if (iter.getMovingNoteY() - fixed_node[0].getFixedNoteY() > 450) {
+				iter.setFillColor(sf::Color::Red);
+
+				switch (event.key.code) {
+				case Keyboard::Left:
+					keycode = 'J';
+					break;
+				case Keyboard::Down:
+					keycode = 'K';
+					break;
+				case Keyboard::Up:
+					keycode = 'I';
+					break;
+				case Keyboard::Right:
+					keycode = 'L';
+					break;
+				}
+				while (window.pollEvent(event)) {
+					//cout << keycode << " " << iter.getArrow() << endl;
+					if (keycode == iter.getArrow()) {
+						score += 0;
+						timingImage = TIMING_TYPE::bad;
+						cout << "못함요 " << score << endl;
+					}
+
+				}
+				// 미스 판정 필요
+				//if(iter.getMovingNoteY()/100 == 1.f)
+				//	cout << keycode << " " << iter.getArrow() << endl;
+			}
+
+
+		}
 	}
 
-	//* 난이도에 따라 화살표 그려주기
-	switch (level) {
-	case 1:
-		duration = clock() - timer;
-		//cout << duration << endl;
-		//올라오는 화살표 시간에 맞춰 그려주기
-		for (int i = 0; i < 200; i++) { //sizeof(beat_easy) / sizeof(beat_easy[0])
-			if (beat_easy[i].getTime() <= duration && beat_easy[i].getTime() != -1)
-			{
-				moving_node[i].update(-18); //135 기준으로 사라져야함
-				window.draw(moving_node[i]);
-			}
-		}
-		break;
-
-	case 2:
-		duration = clock() - timer;
-		//cout << duration << endl;
-		//올라오는 화살표 시간에 맞춰 그려주기
-		for (int i = 0; i < 200; i++) { //sizeof(beat_hard) / sizeof(beat_hard[0])
-			if (beat_hard[i].getTime() <= duration && beat_hard[i].getTime() != -1)
-			{
-				moving_node[i].update(-18); //135 기준으로 사라져야함
-				window.draw(moving_node[i]);
-			}
-		}
-		break;
-
+	switch (timingImage) {
+		case TIMING_TYPE::none:
+			break;
+		case TIMING_TYPE::great:
+			window.draw(sGreat);
+			break;
+		case TIMING_TYPE::good:
+			window.draw(sGood);
+			break;
+		case TIMING_TYPE::bad:
+			window.draw(sBad);
+			break;
 	}
 
-	//* 화살표 충돌 판정: 목표 화살표와 움직이는 화살표의 y좌표값 차이로 판정
-	//for (auto& iter : moving_node) {
-	//	if (iter.getArrow()==arrowPressed) {
+}
 
-	//		//목표 화살표를 넘어선 윗 부분 
-	//		if (iter.getMovingNoteY() - fixed_node[0].getFixedNoteY() <= 10) { 
-	//			iter.setFillColor(sf::Color::Yellow);
-	//		}
+void Game::judge(MovingNote iter) {
+	switch (event.key.code) {
+	case Keyboard::Left:
+		keycode = 'J';
+		break;
+	case Keyboard::Down:
+		keycode = 'K';
+		break;
+	case Keyboard::Up:
+		keycode = 'I';
+		break;
+	case Keyboard::Right:
+		keycode = 'L';
+		break;
+	}
+	while (window.pollEvent(event)) {
+		cout << keycode << " " << iter.getArrow() << endl;
+		if (keycode == iter.getArrow()) {
+			cout << "굿 " << iter.getArrow() << endl;
+		}
+		else {
+			cout << "미스욘... " << endl;
+		}
 
-	//		//목표 화살표 부분
-	//		else if (iter.getMovingNoteY() - fixed_node[0].getFixedNoteY() <= 200) {
-	//			iter.setFillColor(sf::Color::Green);
-	//		}
-
-	//		//목표 화살표보다 밑 부분
-	//		else if (iter.getMovingNoteY() - fixed_node[0].getFixedNoteY() <= 500) {
-	//			iter.setFillColor(sf::Color::Yellow);
-	//		}
-
-	//		//목표 화살표보다 훨씬 밑 부분
-	//		else{
-	//			iter.setFillColor(sf::Color::Red);
-	//		}
-
-	//	}
-	//}
-
+	}
 }

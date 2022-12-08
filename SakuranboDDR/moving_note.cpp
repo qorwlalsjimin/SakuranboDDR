@@ -33,6 +33,7 @@ MovingNote::MovingNote(Texture* tMovingNode, char arrow) : RectangleShape(sf::Ve
 	setOrigin(50, 50); //회전 전에 중심점 잡아주기
 	setPosition(moving_nodeX, moving_nodeY); //객체 위치 잡아주기
 	setTexture(tMovingNode);
+	proceeded = true; //현재 노트의 진행 상황 
 }
 
 

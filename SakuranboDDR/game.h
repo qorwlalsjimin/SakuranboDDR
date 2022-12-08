@@ -33,8 +33,7 @@ private:
 	bool isMovingNode;
 
 	// 시작 화면 판단
-	bool isStartPage;
-	int crtPage;
+	int crtPage; //enum의 값이 들어감
 
 	// window
 	RenderWindow window;
@@ -54,6 +53,17 @@ private:
 	Texture tEnding;
 	Sprite sEnding;
 
+	// 판정 이미지
+	Texture tGreat;
+	Texture tGood;
+	Texture tBad;
+	Sprite sGreat;
+	Sprite sGood;
+	Sprite sBad;
+
+	// 보여질 판정 이미지는 무엇으로 할지 판단
+	int timingImage; //enum의 값이 들어감
+
 	// 키보드 event
 	Event event;
 
@@ -63,6 +73,7 @@ private:
 	// fixed_node
 	FixedNote* fixed_node;
 	Texture tFixedNode;
+	Texture tFixedNode_event;
 
 	// moving_node
 	vector<MovingNote> moving_node; // 올라오는 모든 노드를 담는 배열
@@ -81,22 +92,22 @@ private:
 	int gap = 300;
 	// 노트 악보
 	Beat beat_easy[200] = {
-		Beat(9000, 'J'),
-		Beat(9300, 'J'),
-		Beat(9600, 'J'),
-		Beat(9900, 'J'),
-		Beat(10500, 'K'),
-		Beat(10800, 'K'),
-		Beat(11100, 'K'),
-		Beat(11400, 'K'),
-		Beat(11700, 'I'),
-		Beat(12000, 'I'),
-		Beat(13000, 'I'),
-		Beat(14000, 'I'),
-		Beat(15000, 'L'),
-		Beat(16000, 'L'),
-		Beat(17000, 'L'),
-		Beat(18000, 'L'),
+		Beat(1000, 'J'),
+		Beat(1300, 'J'),
+		Beat(1600, 'J'),
+		Beat(1900, 'J'),
+		Beat(10500, 'J'),
+		Beat(10800, 'J'),
+		Beat(11100, 'J'),
+		Beat(11400, 'J'),
+		Beat(11700, 'J'),
+		Beat(12000, 'J'),
+		Beat(13000, 'J'),
+		Beat(14000, 'J'),
+		Beat(15000, 'J'),
+		Beat(16000, 'J'),
+		Beat(17000, 'J'),
+		Beat(18000, 'J'),
 		Beat(19000, 'J'),
 		Beat(20000, 'J'),
 		Beat(21000, 'J'),
@@ -182,6 +193,8 @@ public:
 	void dropNotes(int level);
 	void catchNotes();
 
-	void judge(int index);
+	void judge(MovingNote iter);
+
+	//void judge(int index);
 };
 #endif
