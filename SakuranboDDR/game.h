@@ -88,113 +88,386 @@ private:
 
 	// 점수
 	int score = 0;
+	Text textScore;
+	Font font;
 
 	int gap = 300;
 	// 노트 악보
-	Beat beat_easy[200] = {
-		Beat(1000, 'J'),
-		Beat(1300, 'J'),
-		Beat(1600, 'J'),
-		Beat(1900, 'J'),
-		Beat(10500, 'J'),
-		Beat(10800, 'J'),
-		Beat(11100, 'J'),
-		Beat(11400, 'J'),
-		Beat(11700, 'J'),
-		Beat(12000, 'J'),
-		Beat(13000, 'J'),
-		Beat(14000, 'J'),
-		Beat(15000, 'J'),
-		Beat(16000, 'J'),
-		Beat(17000, 'J'),
-		Beat(18000, 'J'),
-		Beat(19000, 'J'),
-		Beat(20000, 'J'),
-		Beat(21000, 'J'),
-		Beat(22000, 'J'),
-		Beat(23000, 'K'),
-		Beat(24000, 'K'),
-		Beat(25000, 'K'),
-		Beat(26000, 'K'),
-		Beat(27000, 'I'),
-		Beat(28000, 'I'),
-		Beat(29000, 'I'),
-		Beat(30000, 'I'),
-		Beat(31000, 'L'),
-		Beat(32000, 'L'),
-		Beat(33000, 'L'),
-		Beat(34000, 'L'),
-		Beat(35000, 'J'),
-		Beat(36000, 'J'),
-		Beat(37000, 'J'),
-		Beat(38000, 'J'),
-		Beat(39000, 'K'),
-		Beat(40000, 'K'),
-		Beat(41000, 'K'),
-		Beat(42000, 'K'),
-		Beat(45000, 'I'),
-		Beat(50000, 'I'),
-		Beat(55000, 'I'),
-		Beat(60000, 'I'),
-		Beat(65000, 'L'),
-		Beat(70000, 'L'),
-		Beat(75000, 'L'),
-		Beat(80000, 'L'),
-		Beat(85000, 'L'),
-		Beat(90000, 'L'),
-		Beat(95000, 'L'),
-		Beat(100000, 'L'),
-		Beat(135000, 'J'),
-		Beat(136000, 'J'),
-		Beat(137000, 'J'),
-		Beat(138000, 'J'),
-		Beat(139000, 'K'),
-		Beat(140000, 'K'),
-		Beat(141000, 'K'),
-		Beat(142000, 'K'),
-		Beat(145000, 'I'),
-		Beat(150000, 'I'),
-		Beat(155000, 'I'),
-		Beat(160000, 'I'),
-		Beat(165000, 'L'),
-		Beat(170000, 'L'),
-		Beat(175000, 'L'),
-		Beat(180000, 'L'),
-		Beat(-1, 'I'),
+	Beat beat_easy[284] = { 
+      Beat(300 * 30, 'I'),
+      Beat(300 * 31, 'I'),
+      Beat(300 * 32, 'I'),
+      Beat(300 * 33, 'I'),
+
+      Beat(300 * 35, 'K'),
+      Beat(300 * 36, 'K'),
+      Beat(300 * 37, 'K'),
+      Beat(300 * 38, 'K'),
+
+      Beat(300 * 40, 'J'),
+      Beat(300 * 41, 'J'),
+      Beat(300 * 42, 'J'),
+      Beat(300 * 43, 'J'),
+
+      Beat(300 * 45, 'K'),
+      Beat(300 * 47, 'K'),
+      Beat(300 * 48, 'K'),
+      Beat(300 * 49, 'K'),
+
+      Beat(300 * 51, 'I'),
+      Beat(300 * 52, 'I'),
+      Beat(300 * 53, 'I'),
+      Beat(300 * 54, 'I'),
+
+      Beat(300 * 56, 'L'),
+      Beat(300 * 57, 'L'),
+      Beat(300 * 58, 'L'),
+      Beat(300 * 59, 'L'),
+
+      Beat(300 * 60, 'J'),
+      Beat(300 * 62, 'J'),
+      Beat(300 * 63, 'J'),
+      Beat(300 * 64, 'J'),
+
+      Beat(300 * 66, 'K'),
+      Beat(300 * 67, 'K'),
+      Beat(300 * 68, 'K'),
+      Beat(300 * 69, 'K'),
+
+      Beat(300 * 71, 'K'),
+      Beat(300 * 72, 'K'),
+      Beat(300 * 73, 'I'),
+      Beat(300 * 74, 'I'),
+
+      Beat(300 * 76, 'I'),
+      Beat(300 * 77, 'I'),
+      Beat(300 * 78, 'L'),
+      Beat(300 * 79, 'L'),
+
+      Beat(300 * 81, 'L'),
+      Beat(300 * 82, 'L'),
+      Beat(300 * 83, 'J'),
+      Beat(300 * 84, 'J'),
+
+      Beat(300 * 86, 'J'),
+      Beat(300 * 87, 'J'),
+      Beat(300 * 88, 'K'),
+      Beat(300 * 89, 'K'),
+
+      Beat(300 * 91, 'K'),
+      Beat(300 * 92, 'K'),
+      Beat(300 * 93, 'I'),
+      Beat(300 * 94, 'I'),
+
+      Beat(300 * 96, 'I'),
+      Beat(300 * 97, 'I'),
+      Beat(300 * 98, 'L'),
+      Beat(300 * 99, 'L'),
+
+      Beat(300 * 101, 'L'),
+      Beat(300 * 102, 'L'),
+      Beat(300 * 103, 'L'),
+      Beat(300 * 104, 'L'),
+
+      Beat(300 * 106, 'L'),
+      Beat(300 * 107, 'L'),
+      Beat(300 * 108, 'J'),
+      Beat(300 * 109, 'J'),
+
+      Beat(300 * 111, 'J'),
+      Beat(300 * 112, 'J'),
+      Beat(300 * 113, 'K'),
+      Beat(300 * 114, 'K'),
+
+      Beat(300 * 116, 'K'),
+      Beat(300 * 117, 'K'),
+      Beat(300 * 118, 'I'),
+      Beat(300 * 119, 'I'),
+
+      Beat(300 * 121, 'I'),
+      Beat(300 * 122, 'I'),
+      Beat(300 * 123, 'L'),
+      Beat(300 * 124, 'L'),
+
+      Beat(300 * 126, 'I'),
+      Beat(300 * 127, 'I'),
+      Beat(300 * 128, 'I'),
+      Beat(300 * 130, 'I'),
+
+      Beat(300 * 132, 'K'),
+      Beat(300 * 134, 'K'),
+      Beat(300 * 136, 'K'),
+      Beat(300 * 138, 'K'),
+
+      Beat(300 * 140, 'J'),
+      Beat(300 * 141, 'J'),
+      Beat(300 * 142, 'J'),
+      Beat(300 * 143, 'J'),
+
+      Beat(300 * 145, 'K'),
+      Beat(300 * 147, 'K'),
+      Beat(300 * 148, 'K'),
+      Beat(300 * 149, 'K'),
+
+      Beat(300 * 151, 'I'),
+      Beat(300 * 152, 'I'),
+      Beat(300 * 153, 'I'),
+      Beat(300 * 154, 'I'),
+
+      Beat(300 * 156, 'L'),
+      Beat(300 * 157, 'L'),
+      Beat(300 * 158, 'L'),
+      Beat(300 * 159, 'L'),
+
+      Beat(300 * 161, 'J'),
+      Beat(300 * 162, 'J'),
+      Beat(300 * 163, 'J'),
+      Beat(300 * 164, 'J'),
+
+      Beat(300 * 166, 'K'),
+      Beat(300 * 167, 'K'),
+      Beat(300 * 168, 'K'),
+      Beat(300 * 169, 'K'),
+
+      Beat(300 * 171, 'K'),
+      Beat(300 * 172, 'K'),
+      Beat(300 * 173, 'I'),
+      Beat(300 * 174, 'I'),
+
+      Beat(300 * 176, 'I'),
+      Beat(300 * 177, 'I'),
+      Beat(300 * 178, 'L'),
+      Beat(300 * 179, 'L'),
+
+      Beat(300 * 181, 'L'),
+      Beat(300 * 182, 'L'),
+      Beat(300 * 183, 'J'),
+      Beat(300 * 184, 'J'),
+
+      Beat(300 * 186, 'J'),
+      Beat(300 * 187, 'J'),
+      Beat(300 * 188, 'K'),
+      Beat(300 * 189, 'K'),
+
+      Beat(300 * 191, 'K'),
+      Beat(300 * 192, 'K'),
+      Beat(300 * 193, 'I'),
+      Beat(300 * 194, 'I'),
+
+      Beat(300 * 196, 'I'),
+      Beat(300 * 197, 'I'),
+      Beat(300 * 198, 'L'),
+      Beat(300 * 199, 'L'),
+
+      Beat(300 * 201, 'L'),
+      Beat(300 * 202, 'L'),
+      Beat(300 * 203, 'L'),
+      Beat(300 * 204, 'L'),
+
+      Beat(300 * 206, 'L'),
+      Beat(300 * 207, 'L'),
+      Beat(300 * 208, 'J'),
+      Beat(300 * 209, 'J'),
+
+      Beat(300 * 211, 'J'),
+      Beat(300 * 212, 'J'),
+      Beat(300 * 213, 'K'),
+      Beat(300 * 214, 'K'),
+
+      Beat(300 * 216, 'K'),
+      Beat(300 * 217, 'K'),
+      Beat(300 * 218, 'I'),
+      Beat(300 * 219, 'I'),
+
+      Beat(300 * 221, 'I'),
+      Beat(300 * 222, 'I'),
+      Beat(300 * 223, 'L'),
+      Beat(300 * 224, 'L'),
+
+      Beat(300 * 226, 'K'),
+      Beat(300 * 227, 'K'),
+      Beat(300 * 228, 'K'),
+      Beat(300 * 229, 'K'),
+
+      Beat(300 * 231, 'J'),
+      Beat(300 * 232, 'J'),
+      Beat(300 * 233, 'J'),
+      Beat(300 * 234, 'J'),
+
+      Beat(300 * 235, 'K'),
+      Beat(300 * 236, 'K'),
+      Beat(300 * 237, 'K'),
+      Beat(300 * 238, 'K'),
+
+      Beat(300 * 240, 'J'),
+      Beat(300 * 241, 'J'),
+      Beat(300 * 242, 'J'),
+      Beat(300 * 243, 'J'),
+
+      Beat(300 * 245, 'K'),
+      Beat(300 * 247, 'K'),
+      Beat(300 * 248, 'K'),
+      Beat(300 * 249, 'K'),
+
+      Beat(300 * 251, 'I'),
+      Beat(300 * 252, 'I'),
+      Beat(300 * 253, 'I'),
+      Beat(300 * 254, 'I'),
+
+      Beat(300 * 256, 'L'),
+      Beat(300 * 257, 'L'),
+      Beat(300 * 258, 'L'),
+      Beat(300 * 259, 'L'),
+
+      Beat(300 * 260, 'J'),
+      Beat(300 * 262, 'J'),
+      Beat(300 * 263, 'J'),
+      Beat(300 * 264, 'J'),
+
+      Beat(300 * 266, 'K'),
+      Beat(300 * 267, 'K'),
+      Beat(300 * 268, 'K'),
+      Beat(300 * 269, 'K'),
+
+      Beat(300 * 271, 'K'),
+      Beat(300 * 272, 'K'),
+      Beat(300 * 273, 'I'),
+      Beat(300 * 274, 'I'),
+
+      Beat(300 * 276, 'I'),
+      Beat(300 * 277, 'I'),
+      Beat(300 * 278, 'L'),
+      Beat(300 * 279, 'L'),
+
+      Beat(300 * 281, 'L'),
+      Beat(300 * 282, 'L'),
+      Beat(300 * 283, 'J'),
+      Beat(300 * 284, 'J'),
+
+      Beat(300 * 286, 'J'),
+      Beat(300 * 287, 'J'),
+      Beat(300 * 288, 'K'),
+      Beat(300 * 289, 'K'),
+
+      Beat(300 * 291, 'K'),
+      Beat(300 * 292, 'K'),
+      Beat(300 * 293, 'I'),
+      Beat(300 * 294, 'I'),
+
+      Beat(300 * 296, 'I'),
+      Beat(300 * 297, 'I'),
+      Beat(300 * 298, 'L'),
+      Beat(300 * 299, 'L'),
+
+      Beat(300 * 301, 'L'),
+      Beat(300 * 302, 'L'),
+      Beat(300 * 303, 'L'),
+      Beat(300 * 304, 'L'),
+
+      Beat(300 * 306, 'L'),
+      Beat(300 * 307, 'L'),
+      Beat(300 * 308, 'J'),
+      Beat(300 * 309, 'J'),
+
+      Beat(300 * 311, 'J'),
+      Beat(300 * 312, 'J'),
+      Beat(300 * 314, 'K'),
+      Beat(300 * 314, 'K'),
+
+      Beat(300 * 316, 'K'),
+      Beat(300 * 317, 'K'),
+      Beat(300 * 318, 'I'),
+      Beat(300 * 319, 'I'),
+
+      Beat(300 * 321, 'I'),
+      Beat(300 * 322, 'I'),
+      Beat(300 * 323, 'L'),
+      Beat(300 * 324, 'L'),
+
+      Beat(300 * 326, 'I'),
+      Beat(300 * 327, 'I'),
+      Beat(300 * 328, 'I'),
+      Beat(300 * 329, 'I'),
+
+      Beat(300 * 330, 'I'),
+      Beat(300 * 331, 'I'),
+      Beat(300 * 332, 'I'),
+      Beat(300 * 333, 'I'),
+
+      Beat(300 * 335, 'K'),
+      Beat(300 * 336, 'K'),
+      Beat(300 * 337, 'K'),
+      Beat(300 * 338, 'K'),
+
+      Beat(300 * 340, 'J'),
+      Beat(300 * 341, 'J'),
+      Beat(300 * 342, 'J'),
+      Beat(300 * 343, 'J'),
+
+      Beat(300 * 345, 'K'),
+      Beat(300 * 347, 'K'),
+      Beat(300 * 348, 'K'),
+      Beat(300 * 349, 'K'),
+
+      Beat(300 * 351, 'I'),
+      Beat(300 * 352, 'I'),
+      Beat(300 * 353, 'I'),
+      Beat(300 * 354, 'I'),
+
+      Beat(300 * 356, 'L'),
+      Beat(300 * 357, 'L'),
+      Beat(300 * 358, 'L'),
+      Beat(300 * 359, 'L'),
+
+      Beat(300 * 360, 'J'),
+      Beat(300 * 362, 'J'),
+      Beat(300 * 363, 'J'),
+      Beat(300 * 364, 'J'),
+
+      Beat(300 * 366, 'K'),
+      Beat(300 * 367, 'K'),
+      Beat(300 * 368, 'K'),
+      Beat(300 * 369, 'K'),
+
+      Beat(300 * 371, 'K'),
+      Beat(300 * 372, 'K'),
+      Beat(300 * 373, 'I'),
+      Beat(300 * 374, 'I'),
+
+      Beat(300 * 376, 'I'),
+      Beat(300 * 377, 'I'),
+      Beat(300 * 378, 'L'),
+      Beat(300 * 379, 'L'),
+
+      Beat(300 * 381, 'L'),
+      Beat(300 * 382, 'L'),
+      Beat(300 * 383, 'J'),
+      Beat(300 * 384, 'J'),
+
+      Beat(300 * 386, 'J'),
+
+        //117000 300*390
+
 	};
 
-	Beat beat_hard[200] = {
-		Beat(9000, 'I'),
-		Beat(9300, 'I'),
-		Beat(9600, 'I'),
-		Beat(9900, 'I'),
-		Beat(10500, 'I'),
-		Beat(10500, 'K'),
-		Beat(10800, 'J'),
-		Beat(10800, 'L'),
-		Beat(11100, 'J'),
-		Beat(11400, 'L'),
-		Beat(11700, 'L'),
-		Beat(12000, 'J'),
-		Beat(-1, 'I'),
-	};
-
-	
 public:
 	Game(int width, int height);
 
 	// 인트로 화면
-	void startGame();
-	void controlPage();
+	void startGame(); //게임창 띄우기
+	void controlPage(); //화면전환
 
 	// 게임 화면
-	void runGame(int level);
-	void drawGame(int level);
-	void dropNotes(int level);
+	void runGame(int level); //게임 시작
+	void drawGame(int level); //게임에 필요한 것들 그려주기
+	void dropNotes(int level); //올라올 화살표 배열에 데이터값 넣어주기
 	void catchNotes();
+	void judge(MovingNote iter); //타이밍 판정
 
-	void judge(MovingNote iter);
+	int textPrint(Text& textMsg, Font& font, int size,
+		float x, float y, const Color& color, string p); //텍스트 그려주기
 
-	//void judge(int index);
+	// 엔딩 화면
+	void endPage();
 };
 #endif
