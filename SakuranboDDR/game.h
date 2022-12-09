@@ -93,7 +93,7 @@ private:
 
 	int gap = 300;
 	// 노트 악보
-	Beat beat_easy[284] = { 
+	Beat beat_easy[281] = { 
       Beat(300 * 30, 'I'),
       Beat(300 * 31, 'I'),
       Beat(300 * 32, 'I'),
@@ -444,7 +444,7 @@ private:
       Beat(300 * 383, 'J'),
       Beat(300 * 384, 'J'),
 
-      Beat(300 * 386, 'J'),
+      Beat(300 * 386, 'I'),
 
         //117000 300*390
 

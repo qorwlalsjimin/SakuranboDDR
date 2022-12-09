@@ -107,7 +107,7 @@ void Game::dropNotes(int level) { //레벨을 매개변수로 받기(추후 맵 
 	cout << "dropNotes 실행" << endl;
 	//올라오는 화살표 시간에 맞춰 그려주기
 
-	for (int i = 0; i < 284; i++) { //sizeof(beat_easy) / sizeof(beat_easy[0]){
+	for (int i = 0; i < 281; i++) { //sizeof(beat_easy) / sizeof(beat_easy[0]){
 		moving_node.push_back(MovingNote(&tMovingNode, beat_easy[i].getNoteName()));
 	}
 }
@@ -222,7 +222,7 @@ void Game::drawGame(int level) {
 	duration = clock() - timer;
 
 	//올라오는 화살표 시간에 맞춰 그려주기
-	for (int i = 0; i < 284; i++) { //sizeof(beat_easy) / sizeof(beat_easy[0])
+	for (int i = 0; i < 281; i++) { //sizeof(beat_easy) / sizeof(beat_easy[0])
 		if (beat_easy[i].getTime() <= duration) //데이터에 입력된 시간이 타이머 시간에 다다랐을때
 		{
 			moving_node[i].update(-18); //18씩 위로 올라감 
